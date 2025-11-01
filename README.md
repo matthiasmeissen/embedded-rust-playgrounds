@@ -12,7 +12,7 @@ A place to learn Rust for embedded devices.
 
 ## Phase 0: Foundation & Setup (Days 1-5)
 
-### Day 1: Setup & Flash Your First Program!
+### ✅ Day 1: Setup & Flash Your First Program!
 - **Topic**: Installing the Rust embedded toolchain and immediately flashing a blinking LED to your micro:bit.
 - **Exercise**: Install prerequisites: `rustup target add thumbv7em-none-eabihf` and `cargo install probe-rs-tools --features cli`. Clone the Discovery MB2 repo, connect your micro:bit, navigate to the `src/05-meet-your-software` directory, and run `cargo embed --release`. Watch your LED blink!
 - **Hint**: If `cargo embed` fails, try `probe-rs list` to verify your board is detected. Make sure your micro:bit v2 is connected via USB.
