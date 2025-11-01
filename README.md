@@ -2,203 +2,203 @@
 
 A place to learn Rust for embedded devices.
 
-**Prerequisites**: Completed 99 days of Rust fundamentals
-**Hardware Required**: BBC micro:bit v2 (~$20 USD)
-**Time Commitment**: ~30 minutes per day
-**Primary Resource**: [Discovery MB2 Book](https://docs.rust-embedded.org/discovery-mb2/)
-**Secondary Resource**: [The Embedded Rust Book](https://docs.rust-embedded.org/book/)
+**Prerequisites**: Completed 99 days of Rust fundamentals  
+**Hardware Required**: BBC micro:bit v2 (~$20 USD)  
+**Time Commitment**: ~30 minutes per day  
+**Primary Resource**: [Discovery MB2 Book](https://docs.rust-embedded.org/discovery-mb2/)  
+**Secondary Resource**: [The Embedded Rust Book](https://docs.rust-embedded.org/book/)  
 
 ---
 
 ## Phase 0: Foundation & Setup (Days 1-5)
 
-- Day 1: Setup & Flash Your First Program!
-  - **Topic**: Installing the Rust embedded toolchain and immediately flashing a blinking LED to your micro:bit.
-  - **Exercise**: Install prerequisites: `rustup target add thumbv7em-none-eabihf` and `cargo install probe-rs-tools --features cli`. Clone the Discovery MB2 repo, connect your micro:bit, navigate to the `src/05-meet-your-hardware` directory, and run `cargo embed --release`. Watch your LED blink!
-  - **Hint**: If `cargo embed` fails, try `probe-rs list` to verify your board is detected. Make sure your micro:bit v2 is connected via USB.
-  - **Book**: Discovery MB2 - Chapter 3 (Setup) & Chapter 5 (Flash It)
+### Day 1: Setup & Flash Your First Program!
+- **Topic**: Installing the Rust embedded toolchain and immediately flashing a blinking LED to your micro:bit.
+- **Exercise**: Install prerequisites: `rustup target add thumbv7em-none-eabihf` and `cargo install probe-rs-tools --features cli`. Clone the Discovery MB2 repo, connect your micro:bit, navigate to the `src/05-meet-your-software` directory, and run `cargo embed --release`. Watch your LED blink!
+- **Hint**: If `cargo embed` fails, try `probe-rs list` to verify your board is detected. Make sure your micro:bit v2 is connected via USB.
+- **Book**: Discovery MB2 - Chapter 3 (Setup) & Chapter 5 (Flash It)
 
-- Day 2: Understanding What Just Happened
-  -  **Topic**: Breaking down the blinking LED program - what makes embedded Rust different from desktop Rust.
-  -  **Exercise**: Open the `main.rs` file you just flashed. Identify these key differences: `#![no_std]`, `#![no_main]`, the `#[entry]` attribute, and the infinite loop. Try changing the delay duration and reflash.
-  -  **Hint**: `no_std` means no standard library - no `Vec`, no `String`, no heap allocation! The `#[entry]` macro marks where your program starts (not `fn main()`).
-  -  **Book**: Discovery MB2 - Chapter 5: Meet Your Software | Embedded Rust Book - Chapter 4
+### Day 2: Understanding What Just Happened
+-  **Topic**: Breaking down the blinking LED program - what makes embedded Rust different from desktop Rust.
+-  **Exercise**: Open the `main.rs` file you just flashed. Identify these key differences: `#![no_std]`, `#![no_main]`, the `#[entry]` attribute, and the infinite loop. Try changing the delay duration and reflash.
+-  **Hint**: `no_std` means no standard library - no `Vec`, no `String`, no heap allocation! The `#[entry]` macro marks where your program starts (not `fn main()`).
+-  **Book**: Discovery MB2 - Chapter 5: Meet Your Software | Embedded Rust Book - Chapter 4
 
-- Day 3: Your First Code Change
-  - **Topic**: Modifying the LED blink pattern and understanding basic GPIO output.
-  - **Exercise**: Change the blink pattern to: on for 1 second, off for 1 second, on for 200ms, off for 200ms (repeating). Experiment with different patterns.
-  - **Hint**: Look for `board.display_pins` and the `.set_high()` / `.set_low()` methods. The delay is controlled by `timer.delay_ms()`.
-  - **Book**: Discovery MB2 - Chapter 5
+### Day 3: Your First Code Change
+- **Topic**: Modifying the LED blink pattern and understanding basic GPIO output.
+- **Exercise**: Change the blink pattern to: on for 1 second, off for 1 second, on for 200ms, off for 200ms (repeating). Experiment with different patterns.
+- **Hint**: Look for `board.display_pins` and the `.set_high()` / `.set_low()` methods. The delay is controlled by `timer.delay_ms()`.
+- **Book**: Discovery MB2 - Chapter 5
 
--  Day 4: Meet Your Hardware
-  - **Topic**: Understanding the BBC micro:bit v2 components and capabilities.
-  - **Exercise**: With your micro:bit in hand, physically identify: the nRF52833 chip (the large black square), the 5x5 LED matrix, buttons A and B, the USB connector, and the edge connector pins. Read Chapter 4 to understand what each does.
-  - **Hint**: The nRF52833 is an ARM Cortex-M4F processor (the 'F' means floating-point support) with 512KB Flash and 128KB RAM.
-  - **Book**: Discovery MB2 - Chapter 4: Meet Your Hardware
+### Day 4: Meet Your Hardware
+- **Topic**: Understanding the BBC micro:bit v2 components and capabilities.
+- **Exercise**: With your micro:bit in hand, physically identify: the nRF52833 chip (the large black square), the 5x5 LED matrix, buttons A and B, the USB connector, and the edge connector pins. Read Chapter 4 to understand what each does.
+- **Hint**: The nRF52833 is an ARM Cortex-M4F processor (the 'F' means floating-point support) with 512KB Flash and 128KB RAM.
+- **Book**: Discovery MB2 - Chapter 4: Meet Your Hardware
 
-- Day 5: Project Structure Deep Dive
-  - **Topic**: Understanding the anatomy of an embedded Rust project - Cargo.toml, memory.x, and Embed.toml.
-  - **Exercise**: Examine your project's `Cargo.toml` - identify the key dependencies: `cortex-m`, `cortex-m-rt` (runtime), `nrf52833-hal` (hardware abstraction layer), and `panic-halt`. Read what each one provides.
-  - **Hint**: `cortex-m-rt` provides the startup code and interrupt vector table. `panic-halt` defines what happens when your program panics (it just halts).
-  - **Book**: Discovery MB2 - Chapter 5 | Embedded Rust Book - Chapter 5
+### Day 5: Project Structure Deep Dive
+- **Topic**: Understanding the anatomy of an embedded Rust project - Cargo.toml, memory.x, and Embed.toml.
+- **Exercise**: Examine your project's `Cargo.toml` - identify the key dependencies: `cortex-m`, `cortex-m-rt` (runtime), `nrf52833-hal` (hardware abstraction layer), and `panic-halt`. Read what each one provides.
+- **Hint**: `cortex-m-rt` provides the startup code and interrupt vector table. `panic-halt` defines what happens when your program panics (it just halts).
+- **Book**: Discovery MB2 - Chapter 5 | Embedded Rust Book - Chapter 5
 
 ---
 
 ## Phase 1: Basics & LED Control (Days 6-20)
 
--  Day 6: Understanding `no_std`
-  - **Topic**: Why embedded systems don't use the standard library and what `core` provides.
-  - **Exercise**: Create a minimal `no_std` program. Try using a `Vec` and observe the compiler error. Replace it with a fixed-size array.
-  - **Hint**: You can't allocate memory dynamically without `std`!
-  - **Book**: Embedded Rust Book - Chapter 4: A `no_std` Application
+### Day 6: Understanding `no_std`
+- **Topic**: Why embedded systems don't use the standard library and what `core` provides.
+- **Exercise**: Create a minimal `no_std` program. Try using a `Vec` and observe the compiler error. Replace it with a fixed-size array.
+- **Hint**: You can't allocate memory dynamically without `std`!
+- **Book**: Embedded Rust Book - Chapter 4: A `no_std` Application
 
--  Day 7: Memory Layout Basics
-  - **Topic**: Understanding Flash (program storage) vs RAM (runtime data) and the `.text`, `.data`, `.bss` sections.
-  - **Exercise**: Use `cargo size` to inspect your binary's memory sections. Note which section is largest.
-  - **Hint**: Flash memory is non-volatile; RAM is volatile but faster.
-  - **Book**: Embedded Rust Book - Chapter 5: Memory Layout
+### Day 7: Memory Layout Basics
+- **Topic**: Understanding Flash (program storage) vs RAM (runtime data) and the `.text`, `.data`, `.bss` sections.
+- **Exercise**: Use `cargo size` to inspect your binary's memory sections. Note which section is largest.
+- **Hint**: Flash memory is non-volatile; RAM is volatile but faster.
+- **Book**: Embedded Rust Book - Chapter 5: Memory Layout
 
--  Day 8: Hello, LED!
-  - **Topic**: Controlling a single LED on the micro:bit's LED matrix using GPIO.
-  - **Exercise**: Light up the center LED (row 3, column 3) of the 5x5 matrix. Keep it on for 2 seconds, then turn it off.
-  - **Hint**: The LED matrix is multiplexed - you control rows and columns separately.
-  - **Book**: Discovery MB2 - Chapter 6: Hello World
+### Day 8: Hello, LED!
+- **Topic**: Controlling a single LED on the micro:bit's LED matrix using GPIO.
+- **Exercise**: Light up the center LED (row 3, column 3) of the 5x5 matrix. Keep it on for 2 seconds, then turn it off.
+- **Hint**: The LED matrix is multiplexed - you control rows and columns separately.
+- **Book**: Discovery MB2 - Chapter 6: Hello World
 
--  Day 9: GPIO Pin Configuration
-  - **Topic**: Understanding GPIO modes: input, output, push-pull, open-drain.
-  - **Exercise**: Configure pin P0.21 (LED row 1) as an output. Toggle it on and off 10 times with 500ms delays.
-  - **Hint**: Use `into_push_pull_output()` to configure a pin for driving LEDs.
-  - **Book**: Discovery MB2 - Chapter 7: GPIO
+### Day 9: GPIO Pin Configuration
+- **Topic**: Understanding GPIO modes: input, output, push-pull, open-drain.
+- **Exercise**: Configure pin P0.21 (LED row 1) as an output. Toggle it on and off 10 times with 500ms delays.
+- **Hint**: Use `into_push_pull_output()` to configure a pin for driving LEDs.
+- **Book**: Discovery MB2 - Chapter 7: GPIO
 
--  Day 10: LED Matrix Rows
-  - **Topic**: Understanding row scanning in the LED matrix and how multiplexing works.
-  - **Exercise**: Write code to light up all LEDs in row 1, then row 2, then row 3 sequentially with 1 second between each.
-  - **Hint**: Only one row can be active at a time with the column pins driven.
-  - **Book**: Discovery MB2 - Chapter 6: Display
+### Day 10: LED Matrix Rows
+- **Topic**: Understanding row scanning in the LED matrix and how multiplexing works.
+- **Exercise**: Write code to light up all LEDs in row 1, then row 2, then row 3 sequentially with 1 second between each.
+- **Hint**: Only one row can be active at a time with the column pins driven.
+- **Book**: Discovery MB2 - Chapter 6: Display
 
-- Day 11: LED Matrix Columns
-  - **Topic**: Controlling columns to select specific LEDs within a row.
-  - **Exercise**: Light up only the corner LEDs of the matrix (positions 1,1 / 1,5 / 5,1 / 5,5).
-  - **Hint**: To display an LED at (row, col), set the row high and the column low.
-  - **Book**: Discovery MB2 - Chapter 6: Display
+### Day 11: LED Matrix Columns
+- **Topic**: Controlling columns to select specific LEDs within a row.
+- **Exercise**: Light up only the corner LEDs of the matrix (positions 1,1 / 1,5 / 5,1 / 5,5).
+- **Hint**: To display an LED at (row, col), set the row high and the column low.
+- **Book**: Discovery MB2 - Chapter 6: Display
 
-- Day 12: Delay Mechanisms
-  - **Topic**: Busy-wait delays vs timer-based delays and their trade-offs.
-  - **Exercise**: Implement a busy-wait delay function that counts to a large number. Compare its accuracy to the HAL's `Delay` type.
-  - **Hint**: Busy-wait burns CPU cycles; timers let you do other work.
-  - **Book**: Discovery MB2 - Chapter 6: Timers
+### Day 12: Delay Mechanisms
+- **Topic**: Busy-wait delays vs timer-based delays and their trade-offs.
+- **Exercise**: Implement a busy-wait delay function that counts to a large number. Compare its accuracy to the HAL's `Delay` type.
+- **Hint**: Busy-wait burns CPU cycles; timers let you do other work.
+- **Book**: Discovery MB2 - Chapter 6: Timers
 
-- Day 13: LED Patterns Part 1
-  - **Topic**: Creating simple animations by sequencing LED states.
-  - **Exercise**: Create a "progress bar" animation that fills the top row from left to right, then clears it.
-  - **Hint**: Store LED states in a 5x5 boolean array for easier manipulation.
-  - **Book**: Discovery MB2 - Chapter 6: Display Patterns
+### Day 13: LED Patterns Part 1
+- **Topic**: Creating simple animations by sequencing LED states.
+- **Exercise**: Create a "progress bar" animation that fills the top row from left to right, then clears it.
+- **Hint**: Store LED states in a 5x5 boolean array for easier manipulation.
+- **Book**: Discovery MB2 - Chapter 6: Display Patterns
 
-- Day 14: LED Patterns Part 2
-  - **Topic**: Creating more complex patterns using loops and data structures.
-  - **Exercise**: Create a rotating pattern that moves around the outer edge of the LED matrix.
-  - **Hint**: Use an array of (row, col) tuples to define the pattern sequence.
-  - **Book**: Discovery MB2 - Chapter 6: Display Patterns
+### Day 14: LED Patterns Part 2
+- **Topic**: Creating more complex patterns using loops and data structures.
+- **Exercise**: Create a rotating pattern that moves around the outer edge of the LED matrix.
+- **Hint**: Use an array of (row, col) tuples to define the pattern sequence.
+- **Book**: Discovery MB2 - Chapter 6: Display Patterns
 
-- Day 15: Binary Representations
-  - **Topic**: Using binary literals and bit manipulation to represent LED states compactly.
-  - **Exercise**: Represent each row of the LED matrix as a 5-bit number. Display the pattern `0b11111`, `0b10001`, `0b10001`, `0b10001`, `0b11111` (a square).
-  - **Hint**: Each bit represents one LED in the row.
-  - **Book**: Discovery MB2 - Chapter 6
+### Day 15: Binary Representations
+- **Topic**: Using binary literals and bit manipulation to represent LED states compactly.
+- **Exercise**: Represent each row of the LED matrix as a 5-bit number. Display the pattern `0b11111`, `0b10001`, `0b10001`, `0b10001`, `0b11111` (a square).
+- **Hint**: Each bit represents one LED in the row.
+- **Book**: Discovery MB2 - Chapter 6
 
-- Day 16: Button Input Basics
-  - **Topic**: Reading digital input from the micro:bit's buttons A and B.
-  - **Exercise**: Write a program that reads button A and lights the center LED when pressed.
-  - **Hint**: Configure the button pin as `into_pullup_input()` - the button pulls the pin low when pressed.
-  - **Book**: Discovery MB2 - Chapter 7: GPIO Input
+### Day 16: Button Input Basics
+- **Topic**: Reading digital input from the micro:bit's buttons A and B.
+- **Exercise**: Write a program that reads button A and lights the center LED when pressed.
+- **Hint**: Configure the button pin as `into_pullup_input()` - the button pulls the pin low when pressed.
+- **Book**: Discovery MB2 - Chapter 7: GPIO Input
 
-- Day 17: Button Polling
-  - **Topic**: Continuously checking button state in a loop (polling).
-  - **Exercise**: Light different LEDs based on which button is pressed: A = left LED, B = right LED, A+B = center LED.
-  - **Hint**: Use `is_low()` or `is_high()` to check the button state.
-  - **Book**: Discovery MB2 - Chapter 7: Buttons
+### Day 17: Button Polling
+- **Topic**: Continuously checking button state in a loop (polling).
+- **Exercise**: Light different LEDs based on which button is pressed: A = left LED, B = right LED, A+B = center LED.
+- **Hint**: Use `is_low()` or `is_high()` to check the button state.
+- **Book**: Discovery MB2 - Chapter 7: Buttons
 
-- Day 18: Debouncing Buttons
-  - **Topic**: Understanding switch bounce and implementing software debouncing.
-  - **Exercise**: Implement a simple debounce by requiring the button to be pressed for 50ms before registering.
-  - **Hint**: Read the button state, delay, then check again to confirm.
-  - **Book**: Discovery MB2 - Chapter 7
+### Day 18: Debouncing Buttons
+- **Topic**: Understanding switch bounce and implementing software debouncing.
+- **Exercise**: Implement a simple debounce by requiring the button to be pressed for 50ms before registering.
+- **Hint**: Read the button state, delay, then check again to confirm.
+- **Book**: Discovery MB2 - Chapter 7
 
-- Day 19: LED Counter
-  - **Topic**: Combining buttons and LEDs to create an interactive counter.
-  - **Exercise**: Create a binary counter displayed on the bottom row. Button A increments, Button B decrements (0-31).
-  - **Hint**: Convert the counter value to binary and display each bit as an LED.
-  - **Book**: Discovery MB2 - Chapter 7
+### Day 19: LED Counter
+- **Topic**: Combining buttons and LEDs to create an interactive counter.
+- **Exercise**: Create a binary counter displayed on the bottom row. Button A increments, Button B decrements (0-31).
+- **Hint**: Convert the counter value to binary and display each bit as an LED.
+- **Book**: Discovery MB2 - Chapter 7
 
-- Day 20: Mini-Project - LED Game
-  - **Topic**: Building a simple reaction game combining all learned concepts.
-  - **Exercise**: Random LED lights up. Player presses button when center LED is lit. Track successes on the display.
-  - **Hint**: Use a simple PRNG or counter-based random selection for LED position.
-  - **Book**: Discovery MB2 - Chapters 6-7
+### Day 20: Mini-Project - LED Game
+- **Topic**: Building a simple reaction game combining all learned concepts.
+- **Exercise**: Random LED lights up. Player presses button when center LED is lit. Track successes on the display.
+- **Hint**: Use a simple PRNG or counter-based random selection for LED position.
+- **Book**: Discovery MB2 - Chapters 6-7
 
 ---
 
 ## Phase 2: Deep Dive - Registers & Memory (Days 21-30)
 
-- Day 21: Memory-Mapped I/O Introduction
-  - **Topic**: Understanding how peripherals are accessed through memory addresses.
-  - **Exercise**: Read the Discovery MB2 Chapter 9 introduction. Identify the base address for GPIO Port 0 in the nRF52833 datasheet.
-  - **Hint**: Peripherals are accessed just like regular memory, but at special addresses.
-  - **Book**: Discovery MB2 - Chapter 9: Registers
+### Day 21: Memory-Mapped I/O Introduction
+- **Topic**: Understanding how peripherals are accessed through memory addresses.
+- **Exercise**: Read the Discovery MB2 Chapter 9 introduction. Identify the base address for GPIO Port 0 in the nRF52833 datasheet.
+- **Hint**: Peripherals are accessed just like regular memory, but at special addresses.
+- **Book**: Discovery MB2 - Chapter 9: Registers
 
-- Day 22: Raw Pointer Access
-  - **Topic**: Using unsafe Rust to directly manipulate peripheral registers.
-  - **Exercise**: Turn on an LED by directly writing to the P0.OUT register at address `0x50000504`.
-  - **Hint**: You'll need `unsafe` blocks and pointer dereferencing: `*(0x50000504 as *mut u32)`.
-  - **Book**: Discovery MB2 - Chapter 9: Registers
+### Day 22: Raw Pointer Access
+- **Topic**: Using unsafe Rust to directly manipulate peripheral registers.
+- **Exercise**: Turn on an LED by directly writing to the P0.OUT register at address `0x50000504`.
+- **Hint**: You'll need `unsafe` blocks and pointer dereferencing: `*(0x50000504 as *mut u32)`.
+- **Book**: Discovery MB2 - Chapter 9: Registers
 
-- Day 23: Register Bit Fields
-  - **Topic**: Understanding how registers are divided into bit fields with specific functions.
-  - **Exercise**: Read the P0.OUT register documentation. Identify which bit controls P0.21 (LED row 1).
-  - **Hint**: Bit 21 controls pin P0.21. Use bit masking: `|= 1 << 21` to set it.
-  - **Book**: Discovery MB2 - Chapter 9: RTRM
+### Day 23: Register Bit Fields
+- **Topic**: Understanding how registers are divided into bit fields with specific functions.
+- **Exercise**: Read the P0.OUT register documentation. Identify which bit controls P0.21 (LED row 1).
+- **Hint**: Bit 21 controls pin P0.21. Use bit masking: `|= 1 << 21` to set it.
+- **Book**: Discovery MB2 - Chapter 9: RTRM
 
-- Day 24: Read-Modify-Write Operations
-  - **Topic**: Safely updating specific bits in a register without affecting others.
-  - **Exercise**: Toggle a single LED by reading P0.OUT, flipping bit 21 with XOR, and writing it back.
-  - **Hint**: Use `^=` for XOR toggle: `reg ^= 1 << 21`.
-  - **Book**: Discovery MB2 - Chapter 9
+### Day 24: Read-Modify-Write Operations
+- **Topic**: Safely updating specific bits in a register without affecting others.
+- **Exercise**: Toggle a single LED by reading P0.OUT, flipping bit 21 with XOR, and writing it back.
+- **Hint**: Use `^=` for XOR toggle: `reg ^= 1 << 21`.
+- **Book**: Discovery MB2 - Chapter 9
 
-- Day 25: GPIO Direction Registers
-  - **Topic**: Configuring pins as inputs or outputs using the DIR register.
-  - **Exercise**: Manually configure P0.21 as an output by setting bit 21 in the P0.DIR register (address `0x50000514`).
-  - **Hint**: Setting a bit to 1 in DIR makes it an output; 0 makes it an input.
-  - **Book**: Discovery MB2 - Chapter 9
+### Day 25: GPIO Direction Registers
+- **Topic**: Configuring pins as inputs or outputs using the DIR register.
+- **Exercise**: Manually configure P0.21 as an output by setting bit 21 in the P0.DIR register (address `0x50000514`).
+- **Hint**: Setting a bit to 1 in DIR makes it an output; 0 makes it an input.
+- **Book**: Discovery MB2 - Chapter 9
 
-- Day 26: Reading Input Registers
-  - **Topic**: Reading button states from the P0.IN register.
-  - **Exercise**: Poll the P0.IN register to detect button A presses. Button A is typically on P0.14.
-  - **Hint**: Check if bit 14 is 0 (button pressed) or 1 (button released).
-  - **Book**: Discovery MB2 - Chapter 9
+### Day 26: Reading Input Registers
+- **Topic**: Reading button states from the P0.IN register.
+- **Exercise**: Poll the P0.IN register to detect button A presses. Button A is typically on P0.14.
+- **Hint**: Check if bit 14 is 0 (button pressed) or 1 (button released).
+- **Book**: Discovery MB2 - Chapter 9
 
-- Day 27: Peripheral Access Crates (PAC)
-  - **Topic**: Using the `nrf52833-pac` crate for type-safe register access.
-  - **Exercise**: Rewrite your LED control code using the PAC instead of raw pointers. Compare the syntax.
-  - **Hint**: The PAC provides structured access like `peripherals.P0.out.write(|w| ...)`.
-  - **Book**: Embedded Rust Book - Chapter 6: Peripherals
+### Day 27: Peripheral Access Crates (PAC)
+- **Topic**: Using the `nrf52833-pac` crate for type-safe register access.
+- **Exercise**: Rewrite your LED control code using the PAC instead of raw pointers. Compare the syntax.
+- **Hint**: The PAC provides structured access like `peripherals.P0.out.write(|w| ...)`.
+- **Book**: Embedded Rust Book - Chapter 6: Peripherals
 
-- Day 28: Hardware Abstraction Layers (HAL)
-  - **Topic**: Understanding the HAL's role in providing portable, safe abstractions.
-  - **Exercise**: Compare raw register code, PAC code, and HAL code for the same LED operation. Note the differences in verbosity and safety.
-  - **Hint**: HAL is the most portable and safe; raw registers are most direct but dangerous.
-  - **Book**: Embedded Rust Book - Chapter 6: HAL
+### Day 28: Hardware Abstraction Layers (HAL)
+- **Topic**: Understanding the HAL's role in providing portable, safe abstractions.
+- **Exercise**: Compare raw register code, PAC code, and HAL code for the same LED operation. Note the differences in verbosity and safety.
+- **Hint**: HAL is the most portable and safe; raw registers are most direct but dangerous.
+- **Book**: Embedded Rust Book - Chapter 6: HAL
 
-- Day 29: Volatile Access
-  - **Topic**: Why peripheral registers must be accessed with `volatile` reads/writes.
-  - **Exercise**: Modify a register without `volatile` (plain pointer read/write). Observe how the compiler may optimize away your code.
-  - **Hint**: Hardware can change register values independently of your code!
-  - **Book**: Embedded Rust Book - Chapter 5
+### Day 29: Volatile Access
+- **Topic**: Why peripheral registers must be accessed with `volatile` reads/writes.
+- **Exercise**: Modify a register without `volatile` (plain pointer read/write). Observe how the compiler may optimize away your code.
+- **Hint**: Hardware can change register values independently of your code!
+- **Book**: Embedded Rust Book - Chapter 5
 
-- Day 30: Review & Mini-Project
-  - **Topic**: Consolidating register knowledge with a practical application.
-  - **Exercise**: Implement a "Simon Says" game using only register-level code (no HAL). Show pattern, player repeats.
-  - **Hint**: Store button press sequences in a fixed-size array.
-  - **Book**: Discovery MB2 - Chapter 9
+### Day 30: Review & Mini-Project
+- **Topic**: Consolidating register knowledge with a practical application.
+- **Exercise**: Implement a "Simon Says" game using only register-level code (no HAL). Show pattern, player repeats.
+- **Hint**: Store button press sequences in a fixed-size array.
+- **Book**: Discovery MB2 - Chapter 9
 
 ---
 
