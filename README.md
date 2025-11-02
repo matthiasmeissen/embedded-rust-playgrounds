@@ -18,7 +18,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: If `cargo embed` fails, try `probe-rs list` to verify your board is detected. Make sure your micro:bit v2 is connected via USB.
 - **Book**: Discovery MB2 - Chapter 3 (Setup) & Chapter 5 (Flash It)
 
-### ✅  Day 2: Understanding What Just Happened
+### ✅ Day 2: Understanding What Just Happened
 -  **Topic**: Breaking down the blinking LED program - what makes embedded Rust different from desktop Rust.
 -  **Exercise**: Open the `main.rs` file you just flashed. Identify these key differences: `#![no_std]`, `#![no_main]`, the `#[entry]` attribute, and the infinite loop. Try changing the delay duration and reflash.
 -  **Hint**: `no_std` means no standard library - no `Vec`, no `String`, no heap allocation! The `#[entry]` macro marks where your program starts (not `fn main()`).
