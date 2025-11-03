@@ -24,7 +24,7 @@ A place to learn Rust for embedded devices.
 -  **Hint**: `no_std` means no standard library - no `Vec`, no `String`, no heap allocation! The `#[entry]` macro marks where your program starts (not `fn main()`).
 -  **Book**: Discovery MB2 - Chapter 5: Meet Your Software | Embedded Rust Book - Chapter 4
 
-### Day 3: Your First Code Change
+### ✅ Day 3: Your First Code Change
 - **Topic**: Modifying the LED blink pattern and understanding basic GPIO output.
 - **Exercise**: Change the blink pattern to: on for 1 second, off for 1 second, on for 200ms, off for 200ms (repeating). Experiment with different patterns.
 - **Hint**: Look for `board.display_pins` and the `.set_high()` / `.set_low()` methods. The delay is controlled by `timer.delay_ms()`.
