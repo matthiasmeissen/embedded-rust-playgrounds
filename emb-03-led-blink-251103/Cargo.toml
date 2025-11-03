@@ -1,0 +1,6 @@
+[package]
+name = "emb-03-led-blink-251103"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
