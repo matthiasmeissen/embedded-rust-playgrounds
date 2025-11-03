@@ -22,7 +22,6 @@ fn main() -> ! {
     // This creates a new timer instance somehow related to Timer0
     // This seems to be one of many different timers in this microcontroller
     let mut timer = Timer::new(board.TIMER0);
-
     // To light up an led you need to set its col pin to low and its row pin to high
     board.display_pins.row1.set_high().unwrap();
 
