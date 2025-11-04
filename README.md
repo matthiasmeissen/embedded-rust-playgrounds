@@ -30,7 +30,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Look for `board.display_pins` and the `.set_high()` / `.set_low()` methods. The delay is controlled by `timer.delay_ms()`.
 - **Book**: Discovery MB2 - Chapter 5
 
-### Day 4: Meet Your Hardware
+### ✅ Day 4: Meet Your Hardware
 - **Topic**: Understanding the BBC micro:bit v2 components and capabilities.
 - **Exercise**: With your micro:bit in hand, physically identify: the nRF52833 chip (the large black square), the 5x5 LED matrix, buttons A and B, the USB connector, and the edge connector pins. Read Chapter 4 to understand what each does.
 - **Hint**: The nRF52833 is an ARM Cortex-M4F processor (the 'F' means floating-point support) with 512KB Flash and 128KB RAM.
