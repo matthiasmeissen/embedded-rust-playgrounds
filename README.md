@@ -36,7 +36,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: The nRF52833 is an ARM Cortex-M4F processor (the 'F' means floating-point support) with 512KB Flash and 128KB RAM.
 - **Book**: Discovery MB2 - Chapter 4: Meet Your Hardware
 
-### Day 5: Project Structure Deep Dive
+### ✅ Day 5: Project Structure Deep Dive
 - **Topic**: Understanding the anatomy of an embedded Rust project - Cargo.toml, memory.x, and Embed.toml.
 - **Exercise**: Examine your project's `Cargo.toml` - identify the key dependencies: `cortex-m`, `cortex-m-rt` (runtime), `nrf52833-hal` (hardware abstraction layer), and `panic-halt`. Read what each one provides.
 - **Hint**: `cortex-m-rt` provides the startup code and interrupt vector table. `panic-halt` defines what happens when your program panics (it just halts).

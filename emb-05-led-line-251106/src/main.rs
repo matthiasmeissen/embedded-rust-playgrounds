@@ -28,11 +28,19 @@ fn main() -> ! {
     let initial_leds: [[u8; 5]; 5] = [[0; 5]; 5];
     let mut leds: [[u8; 5]; 5] = [[0; 5]; 5];
 
+    let mut num = 0;
+
     loop {
+
         for i in 0..5 {
-            leds[i][0] = 1;
-            display.show(&mut timer, leds, 40);
+            for j in 0..5 {
+                leds[i][j] = 1;
+                leds[num % 5][i] = 1;
+                leds[(num + i) % 4][num % 2] = 1;
+            }
+            display.show(&mut timer, leds, 200);
             leds = initial_leds;
         }
+        num += 1;
     }
 }
