@@ -46,7 +46,7 @@ A place to learn Rust for embedded devices.
 
 ## Phase 1: Basics & LED Control (Days 6-20)
 
-### Day 6: Understanding `no_std`
+### ✅ Day 6: Understanding `no_std`
 - **Topic**: Why embedded systems don't use the standard library and what `core` provides.
 - **Exercise**: Create a minimal `no_std` program. Try using a `Vec` and observe the compiler error. Replace it with a fixed-size array.
 - **Hint**: You can't allocate memory dynamically without `std`!

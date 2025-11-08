@@ -1,5 +1,5 @@
 [package]
-name = "emb-06-no-std-251108"
+name = "no-std"
 version = "0.1.0"
 edition = "2024"
 
