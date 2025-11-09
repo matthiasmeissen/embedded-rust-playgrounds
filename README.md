@@ -52,7 +52,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: You can't allocate memory dynamically without `std`!
 - **Book**: Embedded Rust Book - Chapter 4: A `no_std` Application
 
-### Day 7: Memory Layout Basics
+### ✅ Day 7: Memory Layout Basics
 - **Topic**: Understanding Flash (program storage) vs RAM (runtime data) and the `.text`, `.data`, `.bss` sections.
 - **Exercise**: Use `cargo size` to inspect your binary's memory sections. Note which section is largest.
 - **Hint**: Flash memory is non-volatile; RAM is volatile but faster.
