@@ -58,7 +58,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Flash memory is non-volatile; RAM is volatile but faster.
 - **Book**: Embedded Rust Book - Chapter 5: Memory Layout
 
-### Day 8: Hello, LED!
+### ✅ Day 8: Hello, LED!
 - **Topic**: Controlling a single LED on the micro:bit's LED matrix using GPIO.
 - **Exercise**: Light up the center LED (row 3, column 3) of the 5x5 matrix. Keep it on for 2 seconds, then turn it off.
 - **Hint**: The LED matrix is multiplexed - you control rows and columns separately.
