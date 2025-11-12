@@ -1,4 +1,3 @@
-
 // Configure to use no_std which means we only can use the core libraray since we have no os available
 #![no_std]
 // This means that we do not have a main function that runs within the os, we are the only program that is on the device
@@ -35,8 +34,11 @@ fn main() -> ! {
     // .into_open_drain_output() -> Can only actively pull low, needs pullup resistir fo high
 
     // When we call the .into_push_pull_output() method on a pin we need to give it an initial stat argument
-    let _row1 = p0.p0_21.into_push_pull_output(gpio::Level::High);
+    let mut row1 = p0.p0_21.into_push_pull_output(gpio::Level::High);
     let mut col1 = p0.p0_28.into_push_pull_output(gpio::Level::Low);
+
+    let mut col3 = p0.p0_31.into_push_pull_output(gpio::Level::Low);
+    let mut row3 = p0.p0_15.into_push_pull_output(gpio::Level::High);
 
     
     loop {
@@ -45,6 +47,14 @@ fn main() -> ! {
         // This also applies to the timer
         timer0.delay_ms(200);
         col1.set_high().unwrap();
+        col3.set_low().unwrap();
         timer0.delay_ms(200);
+        row3.set_high().unwrap();
+        row1.set_high().unwrap();
+        timer0.delay_ms(200);
+        col1.set_low().unwrap();
+        col3.set_high().unwrap();
+        timer0.delay_ms(200);
+        row1.set_low().unwrap();
     }
 }

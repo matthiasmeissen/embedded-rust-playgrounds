@@ -64,7 +64,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: The LED matrix is multiplexed - you control rows and columns separately.
 - **Book**: Discovery MB2 - Chapter 6: Hello World
 
-### Day 9: GPIO Pin Configuration
+### ✅ Day 9: GPIO Pin Configuration
 - **Topic**: Understanding GPIO modes: input, output, push-pull, open-drain.
 - **Exercise**: Configure pin P0.21 (LED row 1) as an output. Toggle it on and off 10 times with 500ms delays.
 - **Hint**: Use `into_push_pull_output()` to configure a pin for driving LEDs.
