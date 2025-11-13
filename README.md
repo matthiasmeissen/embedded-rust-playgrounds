@@ -70,7 +70,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Use `into_push_pull_output()` to configure a pin for driving LEDs.
 - **Book**: Discovery MB2 - Chapter 7: GPIO
 
-### Day 10: LED Matrix Rows
+### ✅ Day 10: LED Matrix Rows
 - **Topic**: Understanding row scanning in the LED matrix and how multiplexing works.
 - **Exercise**: Write code to light up all LEDs in row 1, then row 2, then row 3 sequentially with 1 second between each.
 - **Hint**: Only one row can be active at a time with the column pins driven.
