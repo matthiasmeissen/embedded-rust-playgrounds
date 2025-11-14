@@ -76,7 +76,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Only one row can be active at a time with the column pins driven.
 - **Book**: Discovery MB2 - Chapter 6: Display
 
-### Day 11: LED Matrix Columns
+### ✅ Day 11: LED Matrix Columns
 - **Topic**: Controlling columns to select specific LEDs within a row.
 - **Exercise**: Light up only the corner LEDs of the matrix (positions 1,1 / 1,5 / 5,1 / 5,5).
 - **Hint**: To display an LED at (row, col), set the row high and the column low.
