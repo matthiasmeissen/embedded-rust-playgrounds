@@ -82,7 +82,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: To display an LED at (row, col), set the row high and the column low.
 - **Book**: Discovery MB2 - Chapter 6: Display
 
-### Day 12: Delay Mechanisms
+### ✅ Day 12: Delay Mechanisms
 - **Topic**: Busy-wait delays vs timer-based delays and their trade-offs.
 - **Exercise**: Implement a busy-wait delay function that counts to a large number. Compare its accuracy to the HAL's `Delay` type.
 - **Hint**: Busy-wait burns CPU cycles; timers let you do other work.
