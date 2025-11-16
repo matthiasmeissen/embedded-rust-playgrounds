@@ -88,7 +88,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Busy-wait burns CPU cycles; timers let you do other work.
 - **Book**: Discovery MB2 - Chapter 6: Timers
 
-### Day 13: LED Patterns Part 1
+### ✅ Day 13: LED Patterns Part 1
 - **Topic**: Creating simple animations by sequencing LED states.
 - **Exercise**: Create a "progress bar" animation that fills the top row from left to right, then clears it.
 - **Hint**: Store LED states in a 5x5 boolean array for easier manipulation.

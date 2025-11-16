@@ -1,4 +1,3 @@
-
 #![no_std]
 #![no_main]
 
@@ -17,8 +16,27 @@ fn main() -> ! {
     let mut pins = board.display_pins;
     let mut timer0 = Timer::new(board.TIMER0);
 
+    let patterns = [
+        [1, 0, 0, 0, 0],
+        [1, 1, 0, 0, 0],
+        [1, 1, 1, 0, 0],
+        [1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 1],
+        [0, 0, 1, 1, 1],
+        [0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0],
+    ];
+
+    let mut index = 0;
+
     loop {
-        draw_row1_pattern(&mut pins, &mut timer0, [0, 1, 0, 0, 0]);
+        draw_row1_pattern(&mut pins, &mut timer0, patterns[index]);
+        timer0.delay_ms(200);
+
+        index += 1;
+        if index >= patterns.len() { index = 0 };
     }
 }
 
@@ -37,19 +55,26 @@ fn reset_pins(pins: &mut DisplayPins) {
 }
 
 fn draw_row1_pattern(pins: &mut DisplayPins, timer0: &mut Timer<pac::TIMER0>, pattern: [usize; 5]) {
-    for i in pattern {
-        reset_pins(pins);
-        if i == 1 {
-            light_row1_led_at_index(pins, i);
+    reset_pins(pins);   
+    for (i, v) in pattern.into_iter().enumerate() {
+        if v == 1 {
+            light_led_at_index(pins, 0, i);
         }
-        timer0.delay_ms(200);
     }
+    timer0.delay_ms(2);
 }
 
-fn light_row1_led_at_index(pins: &mut DisplayPins, index: usize) {
-    pins.row1.set_high().unwrap();
+fn light_led_at_index(pins: &mut DisplayPins, row: usize, col: usize) {
+    match row {
+        0 => pins.row1.set_high().unwrap(),
+        1 => pins.row2.set_high().unwrap(),
+        2 => pins.row3.set_high().unwrap(),
+        3 => pins.row4.set_high().unwrap(),
+        4 => pins.row5.set_high().unwrap(),
+        _ => (),
+    }
 
-    match index {
+    match col {
         0 => pins.col1.set_low().unwrap(),
         1 => pins.col2.set_low().unwrap(),
         2 => pins.col3.set_low().unwrap(),
