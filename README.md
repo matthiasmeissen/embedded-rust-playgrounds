@@ -94,7 +94,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Store LED states in a 5x5 boolean array for easier manipulation.
 - **Book**: Discovery MB2 - Chapter 6: Display Patterns
 
-### Day 14: LED Patterns Part 2
+### ✅ Day 14: LED Patterns Part 2
 - **Topic**: Creating more complex patterns using loops and data structures.
 - **Exercise**: Create a rotating pattern that moves around the outer edge of the LED matrix.
 - **Hint**: Use an array of (row, col) tuples to define the pattern sequence.
