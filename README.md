@@ -100,7 +100,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Use an array of (row, col) tuples to define the pattern sequence.
 - **Book**: Discovery MB2 - Chapter 6: Display Patterns
 
-### Day 15: Binary Representations
+### ✅ Day 15: Binary Representations
 - **Topic**: Using binary literals and bit manipulation to represent LED states compactly.
 - **Exercise**: Represent each row of the LED matrix as a 5-bit number. Display the pattern `0b11111`, `0b10001`, `0b10001`, `0b10001`, `0b11111` (a square).
 - **Hint**: Each bit represents one LED in the row.
