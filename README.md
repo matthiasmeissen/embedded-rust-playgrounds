@@ -106,7 +106,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Each bit represents one LED in the row.
 - **Book**: Discovery MB2 - Chapter 6
 
-### Day 16: Button Input Basics
+### ✅ Day 16: Button Input Basics
 - **Topic**: Reading digital input from the micro:bit's buttons A and B.
 - **Exercise**: Write a program that reads button A and lights the center LED when pressed.
 - **Hint**: Configure the button pin as `into_pullup_input()` - the button pulls the pin low when pressed.
