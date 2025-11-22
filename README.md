@@ -112,7 +112,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Configure the button pin as `into_pullup_input()` - the button pulls the pin low when pressed.
 - **Book**: Discovery MB2 - Chapter 7: GPIO Input
 
-### Day 17: Button Polling
+### ✅ Day 17: Button Polling
 - **Topic**: Continuously checking button state in a loop (polling).
 - **Exercise**: Light different LEDs based on which button is pressed: A = left LED, B = right LED, A+B = center LED.
 - **Hint**: Use `is_low()` or `is_high()` to check the button state.
