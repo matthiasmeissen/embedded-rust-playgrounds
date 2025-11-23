@@ -118,7 +118,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Use `is_low()` or `is_high()` to check the button state.
 - **Book**: Discovery MB2 - Chapter 7: Buttons
 
-### Day 18: Debouncing Buttons
+### ✅ Day 18: Debouncing Buttons
 - **Topic**: Understanding switch bounce and implementing software debouncing.
 - **Exercise**: Implement a simple debounce by requiring the button to be pressed for 50ms before registering.
 - **Hint**: Read the button state, delay, then check again to confirm.
