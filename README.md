@@ -124,7 +124,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Read the button state, delay, then check again to confirm.
 - **Book**: Discovery MB2 - Chapter 7
 
-### Day 19: LED Counter
+### ✅ Day 19: LED Counter
 - **Topic**: Combining buttons and LEDs to create an interactive counter.
 - **Exercise**: Create a binary counter displayed on the bottom row. Button A increments, Button B decrements (0-31).
 - **Hint**: Convert the counter value to binary and display each bit as an LED.
