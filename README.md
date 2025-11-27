@@ -130,7 +130,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Convert the counter value to binary and display each bit as an LED.
 - **Book**: Discovery MB2 - Chapter 7
 
-### Day 20: Mini-Project - LED Game
+### ✅ Day 20: Mini-Project - LED Game
 - **Topic**: Building a simple reaction game combining all learned concepts.
 - **Exercise**: Random LED lights up. Player presses button when center LED is lit. Track successes on the display.
 - **Hint**: Use a simple PRNG or counter-based random selection for LED position.
