@@ -55,6 +55,7 @@ checksum = "8ec610d8f49840a5b376c69663b6369e71f4b34484b9b2eb29fb918d92516cb9"
 dependencies = [
  "bare-metal",
  "bitfield",
+ "critical-section",
  "embedded-hal 0.2.7",
  "volatile-register",
 ]
@@ -95,11 +96,10 @@ checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 name = "emb-21-memory-basics-251128"
 version = "0.1.0"
 dependencies = [
+ "cortex-m",
  "cortex-m-rt",
- "embedded-hal 1.0.0",
  "microbit-v2",
  "nrf52833-hal",
- "panic-halt",
  "panic-rtt-target",
  "rtt-target",
 ]
@@ -272,12 +272,6 @@ dependencies = [
  "cortex-m-rt",
  "vcell",
 ]
-
-[[package]]
-name = "panic-halt"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a513e167849a384b7f9b746e517604398518590a9142f4846a32e3c2a4de7b11"
 
 [[package]]
 name = "panic-rtt-target"

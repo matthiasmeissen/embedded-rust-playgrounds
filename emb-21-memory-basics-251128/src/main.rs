@@ -6,7 +6,6 @@ use cortex_m_rt::entry;
 use panic_rtt_target as _;
 use microbit::hal::{self,pac};
 use pac::{p0, p1};
-use rtt_target::rprintln;
 
 #[entry]
 fn main() -> ! {
