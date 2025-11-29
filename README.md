@@ -501,16 +501,170 @@ A place to learn Rust for embedded devices.
 *   **Exercise**: Add `rprintln!` statements to print the score and current state. Verify the logic works even if the display looks weird.
 *   **Book**: Chapter 16 - Snake Game
 
-### Days 76-90: Deep Dive Review & Extension
+### Days 76: Deep Dive Review & Extension
 *   **Topic**: Re-reading and consolidating.
 *   **Exercise**: The book suggests "What's left for you to explore" on Page 206.
 *   **Task**: Pick one topic (DMA, SPI, or Async) and read the summary.
 *   **Book**: Chapter 17 - Next Steps (Page 206)
 
-*(Note: Since the PDF content effectively ends at the Snake Game (Chapter 16), Days 76-99 are best used to re-build the snake game from scratch without looking at the code, or exploring the "What's left" topics conceptually, as the book does not provide code for them.)*
+---
 
-### Days 91-99: The Final Exam (Self-Paced)
-*   **Topic**: Rebuild Snake.
-*   **Exercise**: Delete your `src` folder. Rebuild the Snake Game using only the PDF for reference, not your previous code.
-*   **Hint**: This proves you understand the architecture, not just copy-pasting.
-*   **Book**: Chapter 16 - Snake Game (Entire Chapter)
+## Phase 8: The Analog World (ADC & Temp) (Days 77-81)
+
+**Goal:** The book skipped Analog-to-Digital Converters (Page 207). We will learn to read "real world" values, not just 0s and 1s.
+
+### Day 77: ADC Theory & The SAADC
+*   **Topic**: Analog-to-Digital Conversion on the nRF52833.
+*   **Exercise**: Read the documentation for `Saadc` (Successive Approximation ADC) in the `nrf52833-hal` crate. The micro:bit v2 edge connector pins (0, 1, 2) can be used as analog inputs.
+*   **Hint**: Digital signals are square (0V or 3V). Analog signals are curves (0.5V, 1.2V, etc.). The ADC turns voltage into a number (0 to 16383).
+*   **Resource**: [nrf52833-hal Saadc Docs](https://docs.rs/nrf52833-hal/latest/nrf52833_hal/saadc/index.html)
+
+### Day 78: Reading the Internal Temperature
+*   **Topic**: Using the internal Temp sensor.
+*   **Exercise**: The nRF52 chip has a built-in thermometer. Initialize the `Temp` struct from the HAL and read the value. Print it via RTT (`rprintln!`).
+*   **Hint**: `let mut temp = Temp::new(board.TEMP); let val = temp.measure();`.
+*   **Resource**: [microbit::hal::Temp Docs](https://docs.rs/nrf52833-hal/latest/nrf52833_hal/temp/struct.Temp.html)
+
+### Day 79: The Microphone (ADC in Practice)
+*   **Topic**: The Microphone is an analog sensor.
+*   **Exercise**: The micro:bit v2 microphone is connected to the ADC. Initialize the microphone pin (`board.microphone`) and read the raw analog value in a loop. Shout at the board and watch the numbers change.
+*   **Hint**: You need to enable the microphone bias (power it up) using the `microphone_pin`.
+*   **Resource**: [microbit-v2 Board Struct](https://docs.rs/microbit-v2/latest/microbit/struct.Board.html)
+
+### Day 80: Visualizing Sound
+*   **Topic**: Mapping Analog values to the LED Matrix.
+*   **Exercise**: Create a "VU Meter". If the microphone value is low, light up row 5. If it's loud, light up rows 5, 4, 3, 2, 1.
+*   **Hint**: You will need to determine a "baseline" (silence) value and subtract it from your reading to measure loudness.
+*   **Resource**: Your previous LED Matrix code.
+
+### Day 81: Light Sensing (The LED Trick)
+*   **Topic**: Using LEDs as sensors.
+*   **Exercise**: The LED matrix can act as a light sensor (reversed bias). The `microbit-v2` crate abstracts this. Use `display.read_light_level()` (or similar in the BSP) to dim the display when the room is dark.
+*   **Hint**: LEDs generate a tiny current when light hits them.
+*   **Book**: Discovery PDF - Page 207 (Concept mentioned)
+
+---
+
+## Phase 9: Advanced Communication (SPI & DMA) (Days 82-87)
+
+**Goal:** The book mentions SPI (Page 208) and DMA (Page 206). We will implement a "Loopback" test to learn these.
+
+### Day 82: SPI Theory vs I2C
+*   **Topic**: Serial Peripheral Interface.
+*   **Exercise**: Understand the difference: SPI uses 4 wires (SCK, MOSI, MISO, CS) and is faster/simpler than I2C.
+*   **Hint**: We don't have an SPI screen, so we will connect the micro:bit to *itself*.
+*   **Resource**: [Embedded Rust Book - SPI](https://docs.rust-embedded.org/book/peripherals/spi.html)
+
+### Day 83: Wiring a Loopback
+*   **Topic**: Physical setup.
+*   **Exercise**: Use a jumper wire (or alligator clip) to connect **Pin 15 (MOSI)** to **Pin 14 (MISO)** on the micro:bit edge connector.
+*   **Hint**: MOSI = Master Out Slave In. MISO = Master In Slave Out. If we connect them, whatever we send, we should immediately receive back.
+*   **Resource**: [micro:bit v2 Pinout](https://tech.microbit.org/hardware/edge-connector/)
+
+### Day 84: Configuring SPI
+*   **Topic**: Initializing the `Spim` peripheral.
+*   **Exercise**: Initialize `nrf52833_hal::Spim`. Use `board.spi_pins` (or manually configure P0.13 as SCK, P0.15 as MOSI, P0.14 as MISO).
+*   **Hint**: The nRF52 uses `Spim` (SPI Master with EasyDMA).
+*   **Resource**: [nrf52833-hal Spim Docs](https://docs.rs/nrf52833-hal/latest/nrf52833_hal/spim/index.html)
+
+### Day 85: The Transfer (DMA in action)
+*   **Topic**: Sending and Receiving simultaneously.
+*   **Exercise**: Create a buffer `let tx_buf = [1, 2, 3, 4];` and an empty `rx_buf`. Use `spim.transfer(&mut rx_buf, &tx_buf)`. Verify `rx_buf` equals `[1, 2, 3, 4]`.
+*   **Hint**: Remove the wire and run it again. It should fail (receive zeros). This proves DMA moved the data.
+*   **Book**: Discovery PDF - Page 206 (DMA Concept)
+
+### Day 86: UART with DMA
+*   **Topic**: Sending huge strings efficiently.
+*   **Exercise**: Look at your Serial code from Day 30. The `Uarte` struct uses DMA automatically. Create a 255-byte string and send it.
+*   **Hint**: The CPU doesn't copy byte-by-byte. It gives the RAM address to the UARTE peripheral and says "Go".
+*   **Resource**: [nrf52833-hal Uarte Docs](https://docs.rs/nrf52833-hal/latest/nrf52833_hal/uarte/index.html)
+
+### Day 87: Blocking vs Non-Blocking Transfer
+*   **Topic**: Understanding `transfer` vs `transfer_split`.
+*   **Exercise**: Read the docs for `transfer_split`. This allows you to start a transfer and get a `future` or `token` back, doing other work while the data moves.
+*   **Hint**: This is the precursor to Async Rust.
+*   **Resource**: [embedded-hal SPI Traits](https://docs.rs/embedded-hal/latest/embedded_hal/spi/index.html)
+
+---
+
+## Phase 10: RTIC - Professional Concurrency (Days 88-93)
+
+**Goal:** The PDF explicitly recommends RTIC (Page 211) as the solution to the messy interrupt handling we did in the Snake game.
+
+### Day 88: RTIC Setup
+*   **Topic**: What is RTIC?
+*   **Exercise**: Create a new project folder. Add `cortex-m-rtic` to dependencies. Read the RTIC "By Example" Introduction.
+*   **Hint**: RTIC uses a macro `#[app]` to manage shared resources safely, replacing our manual `CriticalSection` and `Mutex` code.
+*   **Resource**: [RTIC Book](https://rtic.rs/2/book/en/)
+
+### Day 89: RTIC Blinky
+*   **Topic**: Your first RTIC task.
+*   **Exercise**: Port the "Timer Blinky" (Day 52) to RTIC. Create an `init` task that sets up the timer and an `idle` task that loops.
+*   **Hint**: RTIC handles the `entry` point for you.
+*   **Resource**: [RTIC Book - Simple Example](https://rtic.rs/2/book/en/by-example/app.html)
+
+### Day 90: Hardware Tasks (Interrupts)
+*   **Topic**: Handling buttons in RTIC.
+*   **Exercise**: Define a task `#[task(binds = GPIOTE, ...)]`. Move your button handling logic here. Notice you don't need `unsafe` to unmask interrupts; RTIC does it.
+*   **Hint**: RTIC automates the NVIC configuration we did manually on Day 51.
+*   **Resource**: [RTIC Book - Hardware Tasks](https://rtic.rs/2/book/en/by-example/tasks/hardware_tasks.html)
+
+### Day 91: Scheduled Software Tasks
+*   **Topic**: The "Siren" logic improved.
+*   **Exercise**: Instead of a hardware timer interrupt, use RTIC's software tasks. Create a task `blink_led`. Schedule it to run in 1 second. When it runs, toggle LED and schedule itself again.
+*   **Hint**: `cx.schedule.blink_led(monotonics::now() + 1.secs()).unwrap();`
+*   **Resource**: [RTIC Book - Scheduling](https://rtic.rs/2/book/en/by-example/tasks/software_tasks.html)
+
+### Day 92: Shared Resources
+*   **Topic**: Fixing the "Global Mutable" problem.
+*   **Exercise**: Define a resource `struct Resources { state: bool }`. Access it in `init` and your `button` task using `cx.resources.state.lock(|s| ...)`.
+*   **Hint**: This replaces the `static MUTEX<RefCell<...>>` boilerplate from the PDF.
+*   **Resource**: [RTIC Book - Resources](https://rtic.rs/2/book/en/by-example/resources.html)
+
+### Day 93: Refactoring Snake (Mental Draft)
+*   **Topic**: Architecture Review.
+*   **Exercise**: Sketch out on paper how the Snake Game would look in RTIC.
+    *   `init`: Setup Board.
+    *   `task display_refresh` (High Priority): Multiplexing the LEDs.
+    *   `task game_tick` (Lower Priority): Moving the snake.
+    *   `task button_press` (Hardware): Changing direction.
+*   **Hint**: RTIC solves the "glitchy display" issues by allowing high-priority display refreshing to interrupt low-priority game logic.
+
+---
+
+## Phase 11: The Cutting Edge (Async/Embassy) (Days 94-99)
+
+**Goal:** The PDF mentions **Embassy** on Page 210. This is the modern standard for embedded Rust, making code look like standard synchronous code while being non-blocking.
+
+### Day 94: Async Concepts
+*   **Topic**: `async` and `.await` in Embedded.
+*   **Exercise**: Read the Embassy "Executor" documentation. Understand that we don't use OS threads; we use a single-core cooperative scheduler.
+*   **Hint**: Async allows us to write `timer.after(Duration::from_secs(1)).await` instead of blocking the whole CPU.
+*   **Resource**: [Embassy Documentation](https://embassy.dev/book/dev/runtime.html)
+
+### Day 95: Embassy Setup
+*   **Topic**: Setting up the nRF runtime.
+*   **Exercise**: Create a new project. Add `embassy-nrf`, `embassy-executor`, and `embassy-time`. Configure `main` to be `async fn main`.
+*   **Hint**: You will need to enable features for `nrf52833`.
+*   **Resource**: [Embassy nRF Examples](https://github.com/embassy-rs/embassy/tree/main/examples/nrf52833)
+
+### Day 96: Async Blinky
+*   **Topic**: The Hello World of Async.
+*   **Exercise**: Write a loop: `led.set_high(); Timer::after_millis(500).await; led.set_low(); Timer::after_millis(500).await;`.
+*   **Hint**: Notice how clean this looks compared to the interrupt state machines!
+
+### Day 97: Async UART (DMA made easy)
+*   **Topic**: Zero-cost Async Serial.
+*   **Exercise**: Configure the UART in Embassy. Write `uart.write(b"Hello").await`.
+*   **Hint**: Embassy uses DMA under the hood. While it "awaits", the CPU can go to sleep (WFI) automatically to save power.
+
+### Day 98: Multiple Tasks (Spawner)
+*   **Topic**: Running two things at once.
+*   **Exercise**: Spawn two tasks: `task_blink_led` and `task_print_uart`. Give them different delay times. Watch them run "concurrently".
+*   **Hint**: `spawner.spawn(task_blink_led()).unwrap();`
+
+### Day 99: Graduation & "Awesome Embedded Rust"
+*   **Topic**: The Ecosystem.
+*   **Exercise**: Browse the [Awesome Embedded Rust](https://github.com/rust-embedded/awesome-embedded-rust) list. Look for drivers for hardware you might have lying around (LED strips, displays, motors).
+*   **Task**: Plan your next project.
+*   **Book**: Discovery PDF - Page 210 ("So where to next?")
