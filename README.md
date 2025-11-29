@@ -138,537 +138,379 @@ A place to learn Rust for embedded devices.
 
 ---
 
-## Phase 2: Deep Dive - Registers & Memory (Days 21-30)
+## Phase 2: Registers & The "Safety" Transition (Days 21-25)
 
-### Day 21: Memory-Mapped I/O Introduction
+**Goal:** Move immediately from the "hard way" (unsafe pointers) to the "Rust way" (Type Safe API) as described at the end of Chapter 7.
+
+### ✅ Day 21: Memory-Mapped I/O Introduction
 - **Topic**: Understanding how peripherals are accessed through memory addresses.
 - **Exercise**: Read the Discovery MB2 Chapter 9 introduction. Identify the base address for GPIO Port 0 in the nRF52833 datasheet.
 - **Hint**: Peripherals are accessed just like regular memory, but at special addresses.
 - **Book**: Discovery MB2 - Chapter 9: Registers
 
-### Day 22: Raw Pointer Access
-- **Topic**: Using unsafe Rust to directly manipulate peripheral registers.
-- **Exercise**: Turn on an LED by directly writing to the P0.OUT register at address `0x50000504`.
-- **Hint**: You'll need `unsafe` blocks and pointer dereferencing: `*(0x50000504 as *mut u32)`.
-- **Book**: Discovery MB2 - Chapter 9: Registers
+### Day 22: Type Safe Manipulation
+*   **Topic**: Using the Type Safe API to manipulate registers without `unsafe` blocks.
+*   **Exercise**: Open `examples/type-safe.rs`. Modify the code to turn on the bottom LED row using `p0.out.modify` instead of raw pointers. Notice how you don't need `unsafe` anymore.
+*   **Hint**: The `modify` method takes a closure. You can access pins like `w.pin19().set_bit()`.
+*   **Book**: Chapter 7 - Registers (Section: "Type safe manipulation", Page 98)
 
-### Day 23: Register Bit Fields
-- **Topic**: Understanding how registers are divided into bit fields with specific functions.
-- **Exercise**: Read the P0.OUT register documentation. Identify which bit controls P0.21 (LED row 1).
-- **Hint**: Bit 21 controls pin P0.21. Use bit masking: `|= 1 << 21` to set it.
-- **Book**: Discovery MB2 - Chapter 9: RTRM
+### Day 23: Reading from Registers
+*   **Topic**: Reading register states using the safe API.
+*   **Exercise**: Run `cargo embed` on your type-safe code. Use GDB to print `*p0`. Observe how the GDB output shows the register block structure rather than just raw memory addresses.
+*   **Hint**: The book shows `print *p0` in GDB outputting a `RegisterBlock`. This confirms you are using the safe abstraction.
+*   **Book**: Chapter 7 - Registers (Page 100)
 
-### Day 24: Read-Modify-Write Operations
-- **Topic**: Safely updating specific bits in a register without affecting others.
-- **Exercise**: Toggle a single LED by reading P0.OUT, flipping bit 21 with XOR, and writing it back.
-- **Hint**: Use `^=` for XOR toggle: `reg ^= 1 << 21`.
-- **Book**: Discovery MB2 - Chapter 9
+### Day 24: Compiler Optimizations (Release Mode)
+*   **Topic**: How the compiler optimizes code and why `volatile` operations matter.
+*   **Exercise**: Run `examples/volatile.rs` using `cargo objdump` (as shown in the book) to see the assembly code. Compare the debug build vs. the release build.
+*   **Hint**: In release mode, the compiler might remove your code if it thinks the code does nothing (like a busy wait loop without volatile read/writes).
+*   **Book**: Chapter 7 - Registers (Section: "(mis)Optimization", Page 85-89)
 
-### Day 25: GPIO Direction Registers
-- **Topic**: Configuring pins as inputs or outputs using the DIR register.
-- **Exercise**: Manually configure P0.21 as an output by setting bit 21 in the P0.DIR register (address `0x50000514`).
-- **Hint**: Setting a bit to 1 in DIR makes it an output; 0 makes it an input.
-- **Book**: Discovery MB2 - Chapter 9
-
-### Day 26: Reading Input Registers
-- **Topic**: Reading button states from the P0.IN register.
-- **Exercise**: Poll the P0.IN register to detect button A presses. Button A is typically on P0.14.
-- **Hint**: Check if bit 14 is 0 (button pressed) or 1 (button released).
-- **Book**: Discovery MB2 - Chapter 9
-
-### Day 27: Peripheral Access Crates (PAC)
-- **Topic**: Using the `nrf52833-pac` crate for type-safe register access.
-- **Exercise**: Rewrite your LED control code using the PAC instead of raw pointers. Compare the syntax.
-- **Hint**: The PAC provides structured access like `peripherals.P0.out.write(|w| ...)`.
-- **Book**: Embedded Rust Book - Chapter 6: Peripherals
-
-### Day 28: Hardware Abstraction Layers (HAL)
-- **Topic**: Understanding the HAL's role in providing portable, safe abstractions.
-- **Exercise**: Compare raw register code, PAC code, and HAL code for the same LED operation. Note the differences in verbosity and safety.
-- **Hint**: HAL is the most portable and safe; raw registers are most direct but dangerous.
-- **Book**: Embedded Rust Book - Chapter 6: HAL
-
-### Day 29: Volatile Access
-- **Topic**: Why peripheral registers must be accessed with `volatile` reads/writes.
-- **Exercise**: Modify a register without `volatile` (plain pointer read/write). Observe how the compiler may optimize away your code.
-- **Hint**: Hardware can change register values independently of your code!
-- **Book**: Embedded Rust Book - Chapter 5
-
-### Day 30: Review & Mini-Project
-- **Topic**: Consolidating register knowledge with a practical application.
-- **Exercise**: Implement a "Simon Says" game using only register-level code (no HAL). Show pattern, player repeats.
-- **Hint**: Store button press sequences in a fixed-size array.
-- **Book**: Discovery MB2 - Chapter 9
+### Day 25: Phase 2 Review & Cleanup
+*   **Topic**: Reviewing the `07-registers` directory.
+*   **Exercise**: Read the "Spooky action at a distance" section to understand why modifying one bit might affect others if you aren't careful, and how the hardware handles this.
+*   **Hint**: `OUTSET` and `OUTCLR` registers allow you to change specific bits without reading the whole register first.
+*   **Book**: Chapter 7 - Registers (Page 95)
 
 ---
 
-## Phase 3: Timers & Interrupts (Days 31-45)
+## Phase 3: Serial Communication (UART) (Days 26-35)
 
-### Day 31: Timer Basics
-**Topic**: Understanding hardware timers and their capabilities (counting, compare, capture).
-**Exercise**: Read the nRF52833 TIMER documentation. Identify how many timers are available and their bit width.
-**Hint**: The nRF52833 has 5 timers (TIMER0-TIMER4), each 32-bit.
-**Book**: Discovery MB2 - Chapter 6: Timers | Embedded Rust Book - Chapter 11
+**Goal:** enabling the micro:bit to send text to your computer so we can debug with `println!` logic.
 
-### Day 32: Configuring a Timer
-**Topic**: Setting up a timer to count at a specific frequency.
-**Exercise**: Configure TIMER0 to count at 1 MHz (1 microsecond per tick). Print the timer value after 1 second.
-**Hint**: Use the prescaler to divide the 16MHz system clock down to 1MHz.
-**Book**: Discovery MB2 - Chapter 6: Timers
+### Day 26: Serial Basics & Tooling
+*   **Topic**: Understanding UART and setting up a terminal.
+*   **Exercise**: Install/configure `minicom` (Linux/Mac) or `PuTTY` (Windows) as described in the book. Verify you can connect to the device.
+*   **Hint**: Baud rate is 115200. You won't see anything yet, just get the window open.
+*   **Book**: Chapter 8 - Serial Communication (Pages 107-113)
 
-### Day 33: Timer Delays
-**Topic**: Creating accurate delays using timer compare events.
-**Exercise**: Replace your busy-wait delays with timer-based delays. Measure the accuracy improvement.
-**Hint**: Set a compare value, wait for the compare event flag to be set.
-**Book**: Discovery MB2 - Chapter 6: Timers
+### Day 27: Sending a Single Byte
+*   **Topic**: Initializing the UARTE peripheral.
+*   **Exercise**: Run `examples/send-byte.rs`. Initialize the UARTE with the correct pins and baud rate. Send the character 'X' to your computer.
+*   **Hint**: You need to initialize the `Uarte` struct and wrap it in `serial_setup::UartePort`.
+*   **Book**: Chapter 8 - Serial Communication (Page 115)
 
-### Day 34: Millisecond Clock
-**Topic**: Using a timer to maintain a system time in milliseconds.
-**Exercise**: Create a `millis()` function that returns elapsed milliseconds since startup using TIMER0.
-**Hint**: Configure the timer to overflow/reset every millisecond and count overflows.
-**Book**: Discovery MB2 - Chapter 6
+### Day 28: Sending a String (Naive)
+*   **Topic**: Iterating over bytes to send a sentence.
+*   **Exercise**: Run `examples/naive-send-string.rs`. Use a `for` loop to iterate over a byte string `b"Hello..."` and send it byte-by-byte.
+*   **Hint**: The `write()` function blocks until the byte is sent.
+*   **Book**: Chapter 8 - Serial Communication (Page 119)
 
-### Day 35: Multiple Timer Channels
-**Topic**: Using multiple compare channels for different timing events.
-**Exercise**: Blink two LEDs at different rates (500ms and 250ms) using two compare channels on one timer.
-**Hint**: Each channel can have its own compare value and event flag.
-**Book**: Discovery MB2 - Chapter 6
+### Day 29: Using `core::fmt::Write`
+*   **Topic**: Using the formatted write macro (`write!`).
+*   **Exercise**: Run `examples/send-string.rs`. Replace the manual loop with the `write!` macro. Note how this allows you to format strings easily.
+*   **Hint**: This requires `use core::fmt::Write;`.
+*   **Book**: Chapter 8 - Serial Communication (Page 120)
 
-### Day 36: Introduction to Interrupts
-**Topic**: Understanding interrupt-driven programming vs polling.
-**Exercise**: Read about the NVIC (Nested Vectored Interrupt Controller) in the Cortex-M4 documentation.
-**Hint**: Interrupts let the CPU do other work and respond only when an event occurs.
-**Book**: Embedded Rust Book - Chapter 12: Interrupts
+### Day 30: Receiving Data
+*   **Topic**: Reading input from your keyboard to the micro:bit.
+*   **Exercise**: Run `examples/receive-byte.rs`. Type keys in your terminal and watch them appear in the RTT console (using `rprintln!`).
+*   **Hint**: The loop uses `serial.read()`. It will wait (block) until you press a key.
+*   **Book**: Chapter 8 - Serial Communication (Page 121)
 
-### Day 37: Timer Interrupts
-**Topic**: Triggering an interrupt when a timer compare event occurs.
-**Exercise**: Configure TIMER0 to generate an interrupt every 1 second. Toggle an LED in the interrupt handler.
-**Hint**: Enable the timer interrupt in the NVIC and implement the `TIMER0()` interrupt handler function.
-**Book**: Discovery MB2 - Chapter 14: Interrupts
+### Day 31: The Echo Server
+*   **Topic**: Building a bidirectional communication loop.
+*   **Exercise**: Write a program that reads a byte from the computer and immediately sends it back. This makes your terminal act like a typewriter.
+*   **Hint**: Inside the loop: `let byte = serial.read(); serial.write(byte);`.
+*   **Book**: Chapter 8 - Serial Communication (Page 122)
 
-### Day 38: Critical Sections
-**Topic**: Protecting shared data between main code and interrupt handlers.
-**Exercise**: Create a counter shared between main and an interrupt. Use a critical section to safely read it in main.
-**Hint**: Use `cortex_m::interrupt::free(|cs| ...)` to create a critical section.
-**Book**: Embedded Rust Book - Chapter 12: Concurrency
+### Day 32: Reverse String Challenge (Setup)
+*   **Topic**: Setting up a buffer for string manipulation.
+*   **Exercise**: Initialize a `heapless::Vec` with a capacity of 32 bytes.
+*   **Hint**: Embedded systems don't have a heap, so we use `heapless::Vec` which is a fixed-size array that acts like a vector.
+*   **Book**: Chapter 8 - Serial Communication (Page 123)
 
-### Day 39: Interrupt Priority
-**Topic**: Setting interrupt priorities to control which interrupts can preempt others.
-**Exercise**: Set up two interrupts with different priorities. Verify that the higher priority one can preempt the lower.
-**Hint**: Lower priority numbers = higher priority (0 is highest).
-**Book**: Embedded Rust Book - Chapter 12
+### Day 33: Reverse String Challenge (Logic)
+*   **Topic**: Storing input until 'Enter' is pressed.
+*   **Exercise**: Modify your loop to push received bytes into the buffer. If the byte is `\r` (Enter), break the loop.
+*   **Hint**: Handle the `buffer.push` error case (if the user types too many characters).
+*   **Book**: Chapter 8 - Serial Communication (Page 126)
 
-### Day 40: Button Interrupts (GPIO Interrupts)
-**Topic**: Using GPIOTE (GPIO Tasks and Events) to trigger interrupts on button presses.
-**Exercise**: Configure button A to generate an interrupt on press. Count button presses in the handler.
-**Hint**: Use the GPIOTE peripheral with PORT events or IN channels.
-**Book**: Discovery MB2 - Chapter 14
+### Day 34: Reverse String Challenge (Output)
+*   **Topic**: Processing the buffer and sending it back.
+*   **Exercise**: Once 'Enter' is detected, iterate through the buffer in reverse (`.iter().rev()`) and send the characters back.
+*   **Hint**: Don't forget to flush the serial port after writing!
+*   **Book**: Chapter 8 - Serial Communication (Page 126)
 
-### Day 41: Debouncing with Interrupts
-**Topic**: Implementing software debouncing in an interrupt-driven system.
-**Exercise**: Modify your button interrupt to ignore bounces by disabling the interrupt temporarily after each press.
-**Hint**: Start a timer in the button interrupt and re-enable the button interrupt when the timer expires.
-**Book**: Discovery MB2 - Chapter 14
-
-### Day 42: Non-Blocking LED Animations
-**Topic**: Using timer interrupts to drive LED animations without blocking code.
-**Exercise**: Implement a scrolling pattern that updates in an interrupt while main() counts button presses.
-**Hint**: Store the animation state in a static variable updated by the interrupt.
-**Book**: Discovery MB2 - Chapter 14
-
-### Day 43: WFI (Wait For Interrupt)
-**Topic**: Using the `wfi` instruction to put the CPU to sleep until an interrupt occurs.
-**Exercise**: Modify your program to call `wfi()` in the main loop. Measure power consumption difference (conceptually).
-**Hint**: `wfi` saves power - the CPU stops until woken by an interrupt.
-**Book**: Embedded Rust Book - Chapter 12
-
-### Day 44: Atomic Operations
-**Topic**: Using atomic types for lock-free communication between interrupts and main code.
-**Exercise**: Replace your critical-section-protected counter with an `AtomicU32`. Compare the code.
-**Hint**: Use `.load(Ordering::Relaxed)` and `.store(val, Ordering::Relaxed)`.
-**Book**: Embedded Rust Book - Chapter 12: Concurrency
-
-### Day 45: Mini-Project - Stopwatch
-**Topic**: Building an interactive stopwatch using interrupts and timers.
-**Exercise**: Button A starts/stops. Button B resets. Display elapsed seconds as a binary number on LEDs. Update via interrupt.
-**Hint**: Use a timer interrupt at 10Hz to update a deciseconds counter.
-**Book**: Discovery MB2 - Chapters 6, 14
+### Day 35: Review & Polish
+*   **Topic**: Reviewing the Serial module.
+*   **Exercise**: Read the solution in the book carefully. Compare it to your code. Ensure you understand `heapless::Vec`.
+*   **Hint**: Serial communication is the primary way we debug complex logic later.
+*   **Book**: Chapter 8 - Serial Communication (Page 126)
 
 ---
 
-## Phase 4: Serial Communication (Days 46-55)
+## Phase 4: I2C and Sensors (Days 36-50)
 
-### Day 46: UART/Serial Basics
-**Topic**: Understanding asynchronous serial communication: baud rate, start/stop bits, parity.
-**Exercise**: Read about the UARTE peripheral in the nRF52833 documentation. Note that it uses DMA.
-**Hint**: UART = Universal Asynchronous Receiver/Transmitter. Baud rate must match on both sides!
-**Book**: Discovery MB2 - Chapter 10: Serial Communication
+**Goal:** Talk to the Accelerometer and Magnetometer chips using the I2C protocol.
 
-### Day 47: Serial Configuration
-**Topic**: Setting up the UART peripheral with appropriate baud rate and pins.
-**Exercise**: Configure UARTE0 for 115200 baud using the micro:bit's USB serial pins. Test by connecting to a terminal.
-**Hint**: The micro:bit v2 has a built-in USB-to-serial converter. No external hardware needed!
-**Book**: Discovery MB2 - Chapter 10
+### Day 36: I2C Protocol Basics
+*   **Topic**: Understanding Clock (SCL) and Data (SDA) lines.
+*   **Exercise**: Read the theory section on I2C. Understand the "Controller -> Target" relationship.
+*   **Hint**: I2C allows multiple sensors on the same two wires.
+*   **Book**: Chapter 9 - I2C (Pages 127-130)
 
-### Day 48: Sending Data
-**Topic**: Transmitting bytes and strings over serial.
-**Exercise**: Send "Hello, Embedded Rust!\n" over serial when button A is pressed. Observe in a terminal emulator.
-**Hint**: Use `write_all()` or similar methods from the HAL's serial traits.
-**Book**: Discovery MB2 - Chapter 10
+### Day 37: Reading a Register
+*   **Topic**: Reading the "Who Am I" register manually.
+*   **Exercise**: Run `examples/chip-id.rs`. Configure the `twim` (Two-Wire Interface Master). Read the `ACCELEROMETER_ID_REG`.
+*   **Hint**: You need to write the address you want to read to the bus, then read the response.
+*   **Book**: Chapter 9 - I2C (Pages 132-133)
 
-### Day 49: Formatted Output
-**Topic**: Using `core::fmt::Write` to send formatted text over serial.
-**Exercise**: Implement the `Write` trait for your serial port. Use `write!()` macro to send formatted strings.
-**Hint**: This enables `write!(serial, "Counter: {}", count)` syntax!
-**Book**: Discovery MB2 - Chapter 10: `core::fmt`
+### Day 38: Using the Driver (Accelerometer)
+*   **Topic**: Using the `lsm303agr` crate.
+*   **Exercise**: Run `examples/show-accel.rs`. Initialize the `Lsm303agr` struct. Read the X, Y, Z acceleration data.
+*   **Hint**: Using a driver crate saves you from looking up register numbers in a datasheet manually.
+*   **Book**: Chapter 9 - I2C (Pages 135-136)
 
-### Day 50: Receiving Data
-**Topic**: Reading bytes from serial and handling input.
-**Exercise**: Echo received characters back to the sender. Display 'A' on LEDs when 'A' is received.
-**Hint**: Use `read()` to receive one byte at a time. Check for errors!
-**Book**: Discovery MB2 - Chapter 10
+### Day 39: The "Punch-o-meter" (Concept)
+*   **Topic**: Measuring max G-force.
+*   **Exercise**: Read the requirements for the Punch-o-meter challenge.
+*   **Hint**: You need to detect when acceleration exceeds a threshold (start punch) and track the max value until it drops.
+*   **Book**: Chapter 11 - Accelerometer (Page 152)
 
-### Day 51: Line Buffering
-**Topic**: Accumulating received characters into lines for processing.
-**Exercise**: Build a line buffer that collects characters until '\n' is received, then process the line.
-**Hint**: Use a fixed-size array as a circular buffer. Handle buffer overflow gracefully.
-**Book**: Discovery MB2 - Chapter 10
+### Day 40: The "Punch-o-meter" (Implementation)
+*   **Topic**: Implementing the logic.
+*   **Exercise**: Modify the loop to track `max_g`. Update `max_g` only if the current reading is higher.
+*   **Hint**: Use `sensor.set_accel_scale` to allow measuring higher G-forces (up to 16G).
+*   **Book**: Chapter 11 - Accelerometer (Page 153)
 
-### Day 52: Serial Command Parser
-**Topic**: Implementing a simple command interpreter over serial.
-**Exercise**: Accept commands like "LED ON", "LED OFF", "COUNT" and respond appropriately.
-**Hint**: Use pattern matching on the received string slices.
-**Book**: Discovery MB2 - Chapter 10
+### Day 41: Magnetometer Basics
+*   **Topic**: Reading the compass sensor.
+*   **Exercise**: Run `examples/magnitude.rs`. Read the X, Y, Z magnetic field data.
+*   **Hint**: The Z-axis points "into the floor" because the chip is on the back of the board.
+*   **Book**: Chapter 10 - Magnetometer (Page 140)
 
-### Day 53: Logging Framework
-**Topic**: Using the `defmt` logging framework for embedded debugging.
-**Exercise**: Replace your serial `write!()` calls with `defmt::info!()` and friends. Compare the binary size.
-**Hint**: `defmt` moves formatting to the host PC, saving precious flash space!
-**Book**: Discovery MB2 - Chapter 5 | defmt documentation
+### Day 42: Math in `no_std`
+*   **Topic**: Calculating magnitude using `libm`.
+*   **Exercise**: Calculate the total strength of the magnetic field: `sqrt(x^2 + y^2 + z^2)`.
+*   **Hint**: Standard math functions aren't available in `no_std`. We import `sqrtf` from the `libm` crate.
+*   **Book**: Chapter 10 - Magnetometer (Page 142)
 
-### Day 54: Serial Interrupts
-**Topic**: Using interrupts for non-blocking serial I/O.
-**Exercise**: Set up RX interrupt to receive characters without polling. Send them back in the interrupt handler.
-**Hint**: Be careful with shared state between the interrupt and main code!
-**Book**: Discovery MB2 - Chapter 10
+### Day 43: Calibration (Theory)
+*   **Topic**: Why is the compass wrong?
+*   **Exercise**: Read about "Hard Iron" offsets. Understand that you need to find the Min and Max values for X and Y by rotating the board.
+*   **Hint**: Calibration code is complex; the book provides a library for it, but understanding the *why* is important.
+*   **Book**: Chapter 10 - Magnetometer (Page 218 - Appendix)
 
-### Day 55: Mini-Project - Serial Terminal
-**Topic**: Building an interactive menu system over serial.
-**Exercise**: Create a menu: 1) Show counter, 2) Reset counter, 3) LED pattern. Handle user input.
-**Hint**: Display the menu after each command completes.
-**Book**: Discovery MB2 - Chapter 10
+### Day 44: LED Compass Challenge (Math)
+*   **Topic**: Calculating heading with `atan2`.
+*   **Exercise**: Use `atan2f(y, x)` to calculate the angle of the board relative to North.
+*   **Hint**: The output is in radians (-PI to +PI).
+*   **Book**: Chapter 10 - Magnetometer (Page 145)
 
----
-
-## Phase 5: I2C and Sensors (Days 56-70)
-
-### Day 56: I2C Protocol Overview
-**Topic**: Understanding the I2C bus: master/slave, addresses, ACK/NACK, clock stretching.
-**Exercise**: Read about the I2C protocol. Draw a timing diagram for a simple read operation.
-**Hint**: I2C uses two wires: SDA (data) and SCL (clock). Multiple devices share the bus!
-**Book**: Discovery MB2 - Chapter 12: I2C | Embedded Rust Book - Chapter 13
-
-### Day 57: I2C Sensor Overview
-**Topic**: Understanding the LSM303AGR accelerometer/magnetometer on the micro:bit v2.
-**Exercise**: Read the LSM303AGR datasheet. Find its I2C addresses (there are two - accel and mag).
-**Hint**: The accelerometer is at 0x19, the magnetometer at 0x1E.
-**Book**: Discovery MB2 - Chapter 12: Hardware
-
-### Day 58: I2C Configuration
-**Topic**: Setting up the TWIM (Two-Wire Interface Master) peripheral.
-**Exercise**: Configure TWIM0 with the correct SDA/SCL pins for the micro:bit v2. Run an I2C scan to detect devices.
-**Hint**: SDA is typically P0.16, SCL is P0.08 on micro:bit v2.
-**Book**: Discovery MB2 - Chapter 12: I2C Setup
-
-### Day 59: I2C Write Operations
-**Topic**: Sending configuration commands to an I2C sensor.
-**Exercise**: Write to the LSM303AGR's CTRL_REG1_A register to power on the accelerometer.
-**Hint**: Register address is 0x20. Write 0x57 to enable all axes at 100Hz.
-**Book**: Discovery MB2 - Chapter 12
-
-### Day 60: I2C Read Operations
-**Topic**: Reading data from I2C sensor registers.
-**Exercise**: Read the WHO_AM_I register (0x0F) from the accelerometer. Verify it returns 0x33.
-**Hint**: Write the register address, then read the response byte.
-**Book**: Discovery MB2 - Chapter 12
-
-### Day 61: Multi-Byte Reads
-**Topic**: Reading sequential registers in a single I2C transaction.
-**Exercise**: Read all 6 acceleration data registers (X, Y, Z as 16-bit values) in one operation.
-**Hint**: Set the MSB of the register address to enable auto-increment.
-**Book**: Discovery MB2 - Chapter 12
-
-### Day 62: Accelerometer Data Processing
-**Topic**: Converting raw ADC values to physical units (g-forces).
-**Exercise**: Read raw accelerometer data and convert to mg (millig). Display direction on LEDs (tilt detector).
-**Hint**: At ±2g scale, sensitivity is ~1mg/LSB. Data is 16-bit signed.
-**Book**: Discovery MB2 - Chapter 12: Accelerometer
-
-### Day 63: Using the LSM303AGR Driver
-**Topic**: Leveraging the `lsm303agr` crate for simplified sensor access.
-**Exercise**: Replace your raw I2C code with the `lsm303agr` driver crate. Compare code complexity.
-**Hint**: The driver handles register details and data conversion for you!
-**Book**: Discovery MB2 - Chapter 12: Using a Driver
-
-### Day 64: Magnetometer Basics
-**Topic**: Understanding magnetic field sensing and compass applications.
-**Exercise**: Enable the magnetometer and read raw magnetic field values on X, Y, Z axes.
-**Hint**: Magnetometer needs different configuration registers than the accelerometer.
-**Book**: Discovery MB2 - Chapter 12: Magnetometer
-
-### Day 65: Compass Calculation
-**Topic**: Computing heading angle from magnetometer data.
-**Exercise**: Calculate heading using `atan2(y, x)`. Display 8 directions (N, NE, E, SE, S, SW, W, NW) on LEDs.
-**Hint**: You'll need `libm` or `micromath` for trig functions in `no_std`.
-**Book**: Discovery MB2 - Chapter 12
-
-### Day 66: Sensor Calibration
-**Topic**: Understanding sensor bias and scaling errors and how to compensate.
-**Exercise**: Implement a simple calibration routine: collect min/max values while rotating the board.
-**Hint**: Store calibration offsets and scales in static variables.
-**Book**: Discovery MB2 - Chapter 12
-
-### Day 67: Tilt-Compensated Compass
-**Topic**: Using accelerometer data to correct compass readings when tilted.
-**Exercise**: Implement tilt compensation math to get accurate heading regardless of board orientation.
-**Hint**: This requires 3D rotation matrix math - it's complex!
-**Book**: Discovery MB2 - Chapter 12
-
-### Day 68: Sensor Fusion Basics
-**Topic**: Combining multiple sensors for more robust measurements.
-**Exercise**: Implement a simple low-pass filter to smooth noisy accelerometer readings.
-**Hint**: `filtered = filtered * 0.9 + new_reading * 0.1` is a basic exponential moving average.
-**Book**: Discovery MB2 - Chapter 12
-
-### Day 69: Embedded-HAL Traits
-**Topic**: Understanding how the `embedded-hal` traits enable portable drivers.
-**Exercise**: Examine the `lsm303agr` driver source. Note how it's generic over I2C trait implementations.
-**Hint**: This is why the same driver works on nRF52, STM32, and other platforms!
-**Book**: Embedded Rust Book - Chapter 7: Portability
-
-### Day 70: Mini-Project - Spirit Level
-**Topic**: Building a digital level/inclinometer using the accelerometer.
-**Exercise**: Show tilt angle on the LED matrix. Level position shows center LED. Tilt moves the dot accordingly.
-**Hint**: Map acceleration values (-2g to +2g) to LED positions (0 to 4).
-**Book**: Discovery MB2 - Chapter 12
+### Day 45: LED Compass Challenge (Display)
+*   **Topic**: Visualizing direction.
+*   **Exercise**: Map the calculated angle to one of the outer LEDs on the 5x5 matrix.
+*   **Hint**: The book provides an `indices` array that maps directions to LED coordinates.
+*   **Book**: Chapter 10 - Magnetometer (Pages 146-149)
 
 ---
 
-## Phase 6: Advanced Topics & Concurrency (Days 71-85)
+## Phase 5: Interrupts & Concurrency (Days 46-65)
 
-### Day 71: RTIC Framework Introduction
-**Topic**: Understanding Real-Time Interrupt-driven Concurrency framework.
-**Exercise**: Read the RTIC book introduction. Understand resources, tasks, and priorities.
-**Hint**: RTIC provides compile-time guarantees about race conditions!
-**Book**: [RTIC Book](https://rtic.rs) - Introduction | Embedded Rust Book - Chapter 14
+**Goal:** Stop "polling" (busy waiting) and start letting the hardware wake up the CPU only when needed.
 
-### Day 72: RTIC - Basic Application
-**Topic**: Converting a simple interrupt-driven application to RTIC.
-**Exercise**: Port your timer interrupt + button LED toggle app to RTIC. Compare code structure.
-**Hint**: RTIC tasks replace raw interrupt handlers. Resources replace static mut variables.
-**Book**: RTIC Book - Chapter 2
+### Day 46: Interrupt Theory
+*   **Topic**: How the CPU handles interruptions.
+*   **Exercise**: Read the section on the NVIC (Nested Vectored Interrupt Controller) and the Stack.
+*   **Hint**: When an interrupt happens, the CPU pauses your main loop, saves its state, runs the handler, and resumes.
+*   **Book**: Chapter 12 - Interrupts (Page 155)
 
-### Day 73: RTIC - Shared Resources
-**Topic**: Safely sharing data between tasks using RTIC resources.
-**Exercise**: Share a counter between a timer task (incrementing) and button task (displaying). No `unsafe` needed!
-**Hint**: RTIC automatically manages critical sections for resource access.
-**Book**: RTIC Book - Chapter 3: Resources
+### Day 47: Defining an ISR
+*   **Topic**: Writing your first Interrupt Service Routine.
+*   **Exercise**: Run `examples/poke.rs`. Define a function `fn GPIOTE()` with the `#[interrupt]` attribute.
+*   **Hint**: If you don't clear the event in the handler, the interrupt will fire infinitely (looping).
+*   **Book**: Chapter 12 - Interrupts (Page 157)
 
-### Day 74: RTIC - Message Passing
-**Topic**: Using software tasks and spawn/schedule for message passing.
-**Exercise**: Create a software task that processes button events. Hardware button task spawns the software task.
-**Hint**: Software tasks run at specified priorities but aren't tied to hardware interrupts.
-**Book**: RTIC Book - Chapter 4
+### Day 48: The Panic Problem
+*   **Topic**: What happens inside an interrupt.
+*   **Exercise**: Experiment with adding a `panic!()` inside the interrupt handler to see how it stops the program.
+*   **Hint**: This confirms the interrupt is actually firing.
+*   **Book**: Chapter 12 - Interrupts (Page 158)
 
-### Day 75: PWM Basics
-**Topic**: Understanding Pulse Width Modulation for LED brightness and motor control.
-**Exercise**: Read the nRF52833 PWM peripheral documentation. Note how many channels are available.
-**Hint**: PWM creates an analog-like output using digital pulses. Duty cycle controls brightness.
-**Book**: Discovery MB2 - Chapter 8: PWM | Embedded Rust Book - Chapter 15
+### Day 49: Sharing Data (Theory)
+*   **Topic**: The problem with global variables in Rust.
+*   **Exercise**: Read about `static` variables and why `static mut` is unsafe.
+*   **Hint**: Interrupts are like threads; they share memory, which can lead to race conditions.
+*   **Book**: Chapter 13 - Concurrency (Page 163)
 
-### Day 76: LED Brightness Control
-**Topic**: Using PWM to fade LEDs smoothly.
-**Exercise**: Fade a single LED from off to full brightness over 2 seconds. Use PWM, not delays!
-**Hint**: Map time to duty cycle: 0% → 100%.
-**Book**: Discovery MB2 - Chapter 8
+### Day 50: Critical Sections & Mutex
+*   **Topic**: Safe data sharing.
+*   **Exercise**: Use `critical_section::Mutex` and `RefCell` to share a counter between `main` and the interrupt.
+*   **Hint**: You don't "lock" this Mutex. You use `interrupt::free(|cs| ...)` to access the data.
+*   **Book**: Chapter 13 - Concurrency (Page 168)
 
-### Day 77: Multi-Channel PWM
-**Topic**: Controlling multiple LEDs with different brightness levels simultaneously.
-**Exercise**: Create a "breathing" pattern on 3 LEDs with different phases (one peaks while others trough).
-**Hint**: Use 3 PWM channels with sine-wave-like duty cycle patterns.
-**Book**: Discovery MB2 - Chapter 8
+### Day 51: Configuring GPIOTE
+*   **Topic**: Button interrupts.
+*   **Exercise**: Configure the GPIOTE peripheral to fire an event when Button A is pressed (High to Low transition).
+*   **Hint**: You must unmask the interrupt in the NVIC using `unsafe { pac::NVIC::unmask(...) }`.
+*   **Book**: Chapter 12 - Interrupts (Page 157)
 
-### Day 78: Speaker/Buzzer Control
-**Topic**: Using PWM to generate audio tones on the micro:bit v2's speaker.
-**Exercise**: Play a simple melody (like "Mary Had a Little Lamb") by varying PWM frequency.
-**Hint**: Frequency determines pitch, duty cycle determines volume. Middle C = 262 Hz.
-**Book**: Discovery MB2 - Chapter 8
+### Day 52: Sharing Peripherals
+*   **Topic**: Moving the GPIOTE peripheral to a global.
+*   **Exercise**: Run `examples/count.rs`. Use `LockMut` (a helper type) to move the GPIOTE peripheral into a global static so the interrupt handler can access it to clear events.
+*   **Hint**: Peripherals are singletons; you can't create them twice.
+*   **Book**: Chapter 13 - Concurrency (Page 170)
 
-### Day 79: DMA (Direct Memory Access)
-**Topic**: Understanding how DMA transfers data without CPU intervention.
-**Exercise**: Read about the nRF52833's EasyDMA. Understand how UARTE uses it for background transfers.
-**Hint**: DMA lets peripherals read/write RAM directly, freeing the CPU for other work.
-**Book**: Embedded Rust Book - Chapter 16: DMA
+### Day 53: Counting Interrupts
+*   **Topic**: A button counter.
+*   **Exercise**: Increment an `AtomicUsize` counter every time the button interrupt fires. Print the count in the main loop.
+*   **Hint**: Using `Atomic` types avoids the need for a full Mutex for simple numbers.
+*   **Book**: Chapter 13 - Concurrency (Page 170)
 
-### Day 80: Power Management Basics
-**Topic**: Understanding sleep modes and power consumption optimization.
-**Exercise**: Measure (conceptually) current draw with CPU active vs in WFI. Configure low-power mode.
-**Hint**: The nRF52833 has multiple sleep modes: System ON, System OFF, etc.
-**Book**: Embedded Rust Book - Chapter 17: Power
+### Day 54: The Bouncing Button
+*   **Topic**: Hardware reality.
+*   **Exercise**: Observe that one button press might trigger multiple interrupts (bouncing).
+*   **Hint**: Mechanical switches are "noisy" electrically.
+*   **Book**: Chapter 13 - Concurrency (Page 173)
 
-### Day 81: RTC (Real-Time Counter)
-**Topic**: Using the low-power RTC for long-duration timing and sleep.
-**Exercise**: Use RTC instead of TIMER for a seconds counter. Compare power consumption (conceptual).
-**Hint**: RTC runs at 32.768 kHz and can wake the CPU from deep sleep.
-**Book**: Discovery MB2 - Chapter 6
-
-### Day 82: Panic Handlers
-**Topic**: Understanding panic behavior in embedded systems and custom panic handlers.
-**Exercise**: Implement a custom panic handler that blinks an LED in an SOS pattern before halting.
-**Hint**: `#[panic_handler]` function is called when your program panics. No stdlib to catch it!
-**Book**: Embedded Rust Book - Chapter 8: Panicking
-
-### Day 83: Error Handling Patterns
-**Topic**: Using `Result` types effectively in embedded code without allocating.
-**Exercise**: Refactor your I2C code to return `Result<T, Error>`. Handle errors by retrying or displaying on LEDs.
-**Hint**: Avoid `.unwrap()` in production code! Always handle errors explicitly.
-**Book**: Embedded Rust Book - Chapter 9
-
-### Day 84: Bootloader Basics
-**Topic**: Understanding how bootloaders work and enabling firmware updates.
-**Exercise**: Read about the nRF52833 bootloader options (Nordic DFU, UF2). Understand memory partitioning.
-**Hint**: Bootloader lives in protected flash and can update the main application.
-**Book**: Embedded Rust Book - Chapter 18
-
-### Day 85: Mini-Project - Music Player
-**Topic**: Combining PWM audio, buttons, and song data structures.
-**Exercise**: Store 3 melodies in flash. Buttons select songs. Play using PWM on speaker. Show playing/paused on LEDs.
-**Hint**: Store notes as (frequency, duration) tuples in const arrays.
-**Book**: Discovery MB2 - Chapters 6, 7, 8
+### Day 55: Debouncing with Timers
+*   **Topic**: Using a timer to ignore bounce.
+*   **Exercise**: In the interrupt, start a Timer. Ignore subsequent interrupts until the timer expires.
+*   **Hint**: This requires sharing both the GPIOTE and the TIMER globally.
+*   **Book**: Chapter 13 - Concurrency (Page 174)
 
 ---
 
-## Phase 7: Integration & Final Project (Days 86-99)
+## Phase 6: Audio & Advanced Control (Days 56-65)
 
-### Day 86: Project Planning
-**Topic**: Designing a complete embedded application with requirements and architecture.
-**Exercise**: Plan your final project. Write requirements, draw a block diagram, list needed peripherals.
-**Hint**: Keep scope manageable! A working simple project beats an incomplete complex one.
-**Book**: Discovery MB2 - Chapter 13
+**Goal:** Using Timers and PWM (Pulse Width Modulation) basics to make sound.
 
-### Day 87: Snake Game - Part 1 (Setup)
-**Topic**: Initializing game state and display structures.
-**Exercise**: Create data structures for snake position (array of coordinates), food position, and direction.
-**Hint**: Use a circular buffer for the snake body. Max length = 25 (full matrix).
-**Book**: Discovery MB2 - Chapter 13: Snake Game
+### Day 56: The Speaker
+*   **Topic**: How the micro:bit speaker works.
+*   **Exercise**: Read about the Speaker pin. It is a piezoelectric speaker controlled by a GPIO pin.
+*   **Hint**: High = Push out, Low = Pull in.
+*   **Book**: Chapter 15 - The MB2 Speaker (Page 177)
 
-### Day 88: Snake Game - Part 2 (Movement)
-**Topic**: Implementing game logic for snake movement and collision.
-**Exercise**: Move the snake head based on direction. Detect wall collisions and self-collisions.
-**Hint**: Check if new head position equals any body segment position for self-collision.
-**Book**: Discovery MB2 - Chapter 13
+### Day 57: Making a Tone (Square Wave)
+*   **Topic**: Generating a frequency.
+*   **Exercise**: Run `examples/square-wave.rs`. Toggle the speaker pin High/Low with a delay in between.
+*   **Hint**: Frequency = 1 / Period. To get 440Hz, you need a specific delay.
+*   **Book**: Chapter 15 - The MB2 Speaker (Page 178)
 
-### Day 89: Snake Game - Part 3 (Input)
-**Topic**: Handling button input to change snake direction.
-**Exercise**: Button A turns left, Button B turns right (relative to current direction). Prevent 180° turns.
-**Hint**: Store direction as an enum: North, East, South, West.
-**Book**: Discovery MB2 - Chapter 13
+### Day 58: Interrupt-Driven Sound
+*   **Topic**: Non-blocking audio.
+*   **Exercise**: Move the toggle logic into a Timer interrupt. This allows the main loop to do other things (like waiting) while the sound plays.
+*   **Hint**: This is the "Siren" challenge.
+*   **Book**: Chapter 15 - The MB2 Speaker (Page 179)
 
-### Day 90: Snake Game - Part 4 (Food & Growth)
-**Topic**: Spawning food and growing the snake when food is eaten.
-**Exercise**: Generate random food positions. When head reaches food, increase snake length by 1.
-**Hint**: Use a simple PRNG or counter-based randomness for food placement.
-**Book**: Discovery MB2 - Chapter 13
+### Day 59: The Siren Logic
+*   **Topic**: Changing frequency over time.
+*   **Exercise**: In the interrupt handler, change the timer's `cc` (capture compare) value to change the frequency of the next interrupt.
+*   **Hint**: This creates a "sweeping" sound.
+*   **Book**: Chapter 15 - The MB2 Speaker (Page 180)
 
-### Day 91: Snake Game - Part 5 (Timing)
-**Topic**: Using timer interrupts for consistent game speed.
-**Exercise**: Move the snake every 500ms using a timer interrupt. Increase speed as score increases.
-**Hint**: Reduce timer period based on score: `period = base_period - (score * speedup)`.
-**Book**: Discovery MB2 - Chapter 13
-
-### Day 92: Snake Game - Part 6 (Polish)
-**Topic**: Adding score display, game over screen, and restart functionality.
-**Exercise**: Show score as binary on LEDs after game over. Hold both buttons to restart.
-**Hint**: Use a state machine: Playing, GameOver, Paused.
-**Book**: Discovery MB2 - Chapter 13
-
-### Day 93: Testing & Debugging
-**Topic**: Systematic debugging and testing of embedded systems.
-**Exercise**: Add debug logging to your snake game. Use `defmt` to trace game state changes.
-**Hint**: Log entering/exiting each state, collisions, and score updates.
-**Book**: Embedded Rust Book - Chapter 10: Debugging
-
-### Day 94: Code Organization
-**Topic**: Structuring embedded Rust projects with modules and traits.
-**Exercise**: Refactor your game into modules: `display`, `input`, `game_logic`, `main`. Use traits where appropriate.
-**Hint**: Each module should have a clear, single responsibility.
-**Book**: Embedded Rust Book - Chapter 19: Design Patterns
-
-### Day 95: Flash Optimization
-**Topic**: Reducing binary size for resource-constrained devices.
-**Exercise**: Enable LTO and opt-level="z" in Cargo.toml. Compare binary sizes before/after.
-**Hint**: Release builds with optimization can be 10x smaller than debug builds!
-**Book**: Embedded Rust Book - Chapter 20: Optimization
-
-### Day 96: Alternative Project - Weather Station
-**Topic**: Building a sensor data logger with display.
-**Exercise**: Read accelerometer as "activity sensor". Display activity level and elapsed time on LEDs. Log to serial.
-**Hint**: Calculate magnitude: `sqrt(x² + y² + z²)`. High magnitude = activity.
-**Book**: Discovery MB2 - Chapters 10, 12
-
-### Day 97: Alternative Project - Reaction Timer
-**Topic**: Building a precision reaction time measurement device.
-**Exercise**: Random delay → LED lights → measure time until button press. Display result in milliseconds via serial.
-**Hint**: Use a high-resolution timer (1 MHz) for accurate timing.
-**Book**: Discovery MB2 - Chapters 6, 7, 10
-
-### Day 98: Documentation & Sharing
-**Topic**: Writing embedded documentation and preparing code for sharing.
-**Exercise**: Add doc comments to your project. Generate docs with `cargo doc`. Write a README with hardware setup instructions.
-**Hint**: Good docs include: required hardware, pin connections, build instructions, and usage examples.
-**Book**: Embedded Rust Book - Chapter 21
-
-### Day 99: Review & Next Steps
-**Topic**: Reflecting on your journey and planning continued learning.
-**Exercise**: List 5 things you learned and 3 areas to explore deeper. Share your project on GitHub!
-**Hint**: Consider exploring: RTOS (FreeRTOS), Bluetooth (nRF Softdevice), Embassy async framework, different MCU platforms.
-**Book**: Embedded Rust Book - Conclusion | [Awesome Embedded Rust](https://github.com/rust-embedded/awesome-embedded-rust)
+### Day 60: The Siren Structure
+*   **Topic**: Organizing the siren code.
+*   **Exercise**: Implement the `Siren` struct that holds the state (current frequency, time, pin state).
+*   **Hint**: The `Siren` struct needs to be shared globally (Mutex) so the interrupt can update it.
+*   **Book**: Chapter 15 - The MB2 Speaker (Page 180)
 
 ---
 
-## 🎓 Congratulations!
+## Phase 7: The Snake Game (Days 61-99)
 
-You've completed 99 days of Embedded Rust! You now have practical experience with:
-- ✅ Bare-metal programming fundamentals
-- ✅ Memory-mapped I/O and register manipulation
-- ✅ Interrupt-driven programming
-- ✅ Serial communication protocols (UART, I2C)
-- ✅ Sensor integration and data processing
-- ✅ Real-time constraints and timing
-- ✅ Complete project development
+**Goal:** The Final Project. Building a complete game engine using modules, non-blocking display, and game logic.
 
-## 📚 Recommended Next Steps
+### Day 61: Modularity
+*   **Topic**: Organizing a large project.
+*   **Exercise**: Create the file structure: `src/main.rs`, `src/game.rs`, `src/display.rs`, `src/controls.rs`.
+*   **Hint**: Read about the `mod` keyword in Rust.
+*   **Book**: Chapter 16 - Snake Game (Page 185)
 
-1. **Explore Embassy Framework**: Modern async/await for embedded Rust
-2. **Learn Bluetooth**: Nordic nRF Softdevice for BLE applications
-3. **Different Platforms**: Try STM32, ESP32, or RP2040
-4. **RTOS Integration**: FreeRTOS or Zephyr with Rust bindings
-5. **Advanced Topics**: Bootloaders, OTA updates, secure boot
-6. **Community**: Join the Rust Embedded Matrix chat and contribute!
+### Day 62: Game Logic - Coordinates
+*   **Topic**: Defining the grid.
+*   **Exercise**: Create `src/game/coords.rs`. Define the `Coords` struct (row, col) and the logic for checking if a point is out of bounds.
+*   **Hint**: The grid is 5x5.
+*   **Book**: Chapter 16 - Snake Game (Page 187)
 
-## 🛠️ Hardware Shopping List
+### Day 63: Random Number Generation (RNG)
+*   **Topic**: Generating random food positions.
+*   **Exercise**: Implement the `Prng` struct in `src/game/rng.rs` using a simple Xorshift algorithm. Seed it using the micro:bit's hardware RNG.
+*   **Hint**: Hardware RNG is slow; software PRNG is fast.
+*   **Book**: Chapter 16 - Snake Game (Page 188)
 
-To complete this curriculum, you need:
-- **BBC micro:bit v2** (~$20) - Required for all exercises
-- **USB cable** (micro-USB) - Usually included with micro:bit
-- Optional: Breadboard, jumper wires, additional sensors for extensions
+### Day 64: The Snake Struct
+*   **Topic**: Defining the snake.
+*   **Exercise**: Create `src/game/snake.rs`. Use a `Queue` (from `heapless` crate) to store the snake's body segments.
+*   **Hint**: `heapless` allows us to have a list of coordinates without using a dynamic memory allocator (heap).
+*   **Book**: Chapter 16 - Snake Game (Page 190)
 
-## 📖 Key Resources
+### Day 65: Movement Logic
+*   **Topic**: Moving the snake.
+*   **Exercise**: Implement `step()` logic. Add the new head position to the queue and remove the tail (unless eating food).
+*   **Hint**: Handle wrapping around the screen edges here.
+*   **Book**: Chapter 16 - Snake Game (Page 193)
 
-- [Discovery MB2 Book](https://docs.rust-embedded.org/discovery-mb2/)
-- [The Embedded Rust Book](https://docs.rust-embedded.org/book/)
-- [RTIC Framework](https://rtic.rs)
-- [Embedded Rust Bookshelf](https://docs.rust-embedded.org)
-- [Awesome Embedded Rust](https://github.com/rust-embedded/awesome-embedded-rust)
+### Day 66: Game State
+*   **Topic**: Win/Loss conditions.
+*   **Exercise**: Implement `GameStatus` enum (Won, Lost, Ongoing). Check for self-collision or full grid.
+*   **Hint**: If the new head coordinate is already in the snake's body set, it's a collision.
+*   **Book**: Chapter 16 - Snake Game (Page 189)
 
-Happy Hacking! 🦀🔧
+### Day 67: Controls Module - Initialization
+*   **Topic**: Setting up buttons for the game.
+*   **Exercise**: In `src/controls.rs`, initialize the GPIOTE channels for Button A and B.
+*   **Hint**: Reuse the interrupt logic we learned in Phase 5.
+*   **Book**: Chapter 16 - Snake Game (Page 196)
+
+### Day 68: Controls Module - Interrupts
+*   **Topic**: Handling game input.
+*   **Exercise**: Write the interrupt handler to update a global `Turn` enum when buttons are pressed.
+*   **Hint**: Button A = Left, Button B = Right.
+*   **Book**: Chapter 16 - Snake Game (Page 198)
+
+### Day 69: Display Module - Non-blocking
+*   **Topic**: Why non-blocking?
+*   **Exercise**: Read about the non-blocking display driver. It allows variable brightness (greyscale) which helps distinguish the head from the tail.
+*   **Hint**: It uses a Timer interrupt to flash LEDs very fast.
+*   **Book**: Chapter 16 - Snake Game (Page 200)
+
+### Day 70: Display Initialization
+*   **Topic**: Setting up the display timer.
+*   **Exercise**: In `src/display.rs`, initialize `microbit::display::nonblocking::Display`.
+*   **Hint**: You need to enable the TIMER1 interrupt.
+*   **Book**: Chapter 16 - Snake Game (Page 201)
+
+### Day 71: Display Interrupt
+*   **Topic**: Driving the LEDs.
+*   **Exercise**: Implement the `TIMER1` interrupt handler. It simply calls `display.handle_display_event()`.
+*   **Hint**: This must be extremely fast to prevent flickering.
+*   **Book**: Chapter 16 - Snake Game (Page 202)
+
+### Day 72: Rendering the Game
+*   **Topic**: Converting game state to pixels.
+*   **Exercise**: Implement `game_matrix()` in `src/game.rs`. It converts the snake coordinates into a 5x5 array of brightness values.
+*   **Hint**: Head = Bright, Tail = Dim, Food = Medium.
+*   **Book**: Chapter 16 - Snake Game (Page 195)
+
+### Day 73: Final Assembly - The Main Loop
+*   **Topic**: Putting it all together.
+*   **Exercise**: In `main.rs`, initialize all modules. Create the game loop: `game.step()`, render image, sleep.
+*   **Hint**: Use `timer.delay_ms()` to control the game speed.
+*   **Book**: Chapter 16 - Snake Game (Page 204)
+
+### Day 74: Tuning the Game
+*   **Topic**: Polish.
+*   **Exercise**: Adjust the speed. Make it get faster as you eat more food.
+*   **Hint**: `step_len_ms` calculation on Page 194.
+*   **Book**: Chapter 16 - Snake Game (Page 194)
+
+### Day 75: Debugging the Game
+*   **Topic**: Using RTT for game logic.
+*   **Exercise**: Add `rprintln!` statements to print the score and current state. Verify the logic works even if the display looks weird.
+*   **Book**: Chapter 16 - Snake Game
+
+### Days 76-90: Deep Dive Review & Extension
+*   **Topic**: Re-reading and consolidating.
+*   **Exercise**: The book suggests "What's left for you to explore" on Page 206.
+*   **Task**: Pick one topic (DMA, SPI, or Async) and read the summary.
+*   **Book**: Chapter 17 - Next Steps (Page 206)
+
+*(Note: Since the PDF content effectively ends at the Snake Game (Chapter 16), Days 76-99 are best used to re-build the snake game from scratch without looking at the code, or exploring the "What's left" topics conceptually, as the book does not provide code for them.)*
+
+### Days 91-99: The Final Exam (Self-Paced)
+*   **Topic**: Rebuild Snake.
+*   **Exercise**: Delete your `src` folder. Rebuild the Snake Game using only the PDF for reference, not your previous code.
+*   **Hint**: This proves you understand the architecture, not just copy-pasting.
+*   **Book**: Chapter 16 - Snake Game (Entire Chapter)
