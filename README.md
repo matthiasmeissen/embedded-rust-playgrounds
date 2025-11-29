@@ -148,7 +148,7 @@ A place to learn Rust for embedded devices.
 - **Hint**: Peripherals are accessed just like regular memory, but at special addresses.
 - **Book**: Discovery MB2 - Chapter 9: Registers
 
-### Day 22: Type Safe Manipulation
+### ✅ Day 22: Type Safe Manipulation
 *   **Topic**: Using the Type Safe API to manipulate registers without `unsafe` blocks.
 *   **Exercise**: Open `examples/type-safe.rs`. Modify the code to turn on the bottom LED row using `p0.out.modify` instead of raw pointers. Notice how you don't need `unsafe` anymore.
 *   **Hint**: The `modify` method takes a closure. You can access pins like `w.pin19().set_bit()`.
