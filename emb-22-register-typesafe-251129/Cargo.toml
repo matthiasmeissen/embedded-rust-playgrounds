@@ -1,0 +1,18 @@
+[package]
+name = "registers"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+cortex-m-rt = "0.7.5"
+microbit-v2 = "0.15.1"
+panic-rtt-target = "0.2.0"
+rtt-target = "0.6.1"
+
+[dependencies.cortex-m]
+version = "0.7.7"
+features = ["inline-asm", "critical-section-single-core"]
+
+[dependencies.nrf52833-hal]
+version = "0.18.0"
+features = ["rt"]
