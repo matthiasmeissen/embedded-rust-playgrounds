@@ -154,7 +154,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: The `modify` method takes a closure. You can access pins like `w.pin19().set_bit()`.
 *   **Book**: Chapter 7 - Registers (Section: "Type safe manipulation", Page 98)
 
-### Day 23: Reading from Registers
+### ✅ Day 23: Reading from Registers
 *   **Topic**: Reading register states using the safe API.
 *   **Exercise**: Run `cargo embed` on your type-safe code. Use GDB to print `*p0`. Observe how the GDB output shows the register block structure rather than just raw memory addresses.
 *   **Hint**: The book shows `print *p0` in GDB outputting a `RegisterBlock`. This confirms you are using the safe abstraction.
