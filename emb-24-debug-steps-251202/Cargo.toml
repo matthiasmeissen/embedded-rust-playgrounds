@@ -1,5 +1,5 @@
 [package]
-name = "emb-24-debug-sreps-251202"
+name = "debug-test"
 version = "0.1.0"
 edition = "2024"
 

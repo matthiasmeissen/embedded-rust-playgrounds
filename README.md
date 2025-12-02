@@ -160,7 +160,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: The book shows `print *p0` in GDB outputting a `RegisterBlock`. This confirms you are using the safe abstraction.
 *   **Book**: Chapter 7 - Registers (Page 100)
 
-### Day 24: Compiler Optimizations (Release Mode)
+### ✅ Day 24: Compiler Optimizations (Release Mode)
 *   **Topic**: How the compiler optimizes code and why `volatile` operations matter.
 *   **Exercise**: Run `examples/volatile.rs` using `cargo objdump` (as shown in the book) to see the assembly code. Compare the debug build vs. the release build.
 *   **Hint**: In release mode, the compiler might remove your code if it thinks the code does nothing (like a busy wait loop without volatile read/writes).
