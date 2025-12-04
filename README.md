@@ -166,7 +166,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: In release mode, the compiler might remove your code if it thinks the code does nothing (like a busy wait loop without volatile read/writes).
 *   **Book**: Chapter 7 - Registers (Section: "(mis)Optimization", Page 85-89)
 
-### Day 25: Phase 2 Review & Cleanup
+### ✅ Day 25: Phase 2 Review & Cleanup
 *   **Topic**: Reviewing the `07-registers` directory.
 *   **Exercise**: Read the "Spooky action at a distance" section to understand why modifying one bit might affect others if you aren't careful, and how the hardware handles this.
 *   **Hint**: `OUTSET` and `OUTCLR` registers allow you to change specific bits without reading the whole register first.
