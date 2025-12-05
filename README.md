@@ -178,7 +178,7 @@ A place to learn Rust for embedded devices.
 
 **Goal:** enabling the micro:bit to send text to your computer so we can debug with `println!` logic.
 
-### Day 26: Serial Basics & Tooling
+### ✅ Day 26: Serial Basics & Tooling
 *   **Topic**: Understanding UART and setting up a terminal.
 *   **Exercise**: Install/configure `minicom` (Linux/Mac) or `PuTTY` (Windows) as described in the book. Verify you can connect to the device.
 *   **Hint**: Baud rate is 115200. You won't see anything yet, just get the window open.
