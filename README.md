@@ -184,7 +184,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Baud rate is 115200. You won't see anything yet, just get the window open.
 *   **Book**: Chapter 8 - Serial Communication (Pages 107-113)
 
-### Day 27: Sending a Single Byte
+### ✅ Day 27: Sending a Single Byte
 *   **Topic**: Initializing the UARTE peripheral.
 *   **Exercise**: Run `examples/send-byte.rs`. Initialize the UARTE with the correct pins and baud rate. Send the character 'X' to your computer.
 *   **Hint**: You need to initialize the `Uarte` struct and wrap it in `serial_setup::UartePort`.
