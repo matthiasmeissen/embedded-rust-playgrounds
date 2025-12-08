@@ -98,6 +98,7 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
+ "embedded-hal 1.0.0",
  "embedded-io",
  "heapless",
  "microbit-v2",

@@ -190,7 +190,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: You need to initialize the `Uarte` struct and wrap it in `serial_setup::UartePort`.
 *   **Book**: Chapter 8 - Serial Communication (Page 115)
 
-### Day 28: Sending a String (Naive)
+### ✅ Day 28: Sending a String (Naive)
 *   **Topic**: Iterating over bytes to send a sentence.
 *   **Exercise**: Run `examples/naive-send-string.rs`. Use a `for` loop to iterate over a byte string `b"Hello..."` and send it byte-by-byte.
 *   **Hint**: The `write()` function blocks until the byte is sent.
