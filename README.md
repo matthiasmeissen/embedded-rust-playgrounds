@@ -196,7 +196,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: The `write()` function blocks until the byte is sent.
 *   **Book**: Chapter 8 - Serial Communication (Page 119)
 
-### Day 29: Using `core::fmt::Write`
+### ✅ Day 29: Using `core::fmt::Write`
 *   **Topic**: Using the formatted write macro (`write!`).
 *   **Exercise**: Run `examples/send-string.rs`. Replace the manual loop with the `write!` macro. Note how this allows you to format strings easily.
 *   **Hint**: This requires `use core::fmt::Write;`.
