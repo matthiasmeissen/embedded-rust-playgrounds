@@ -51,7 +51,6 @@ fn main() -> ! {
             _ => [0, 0, 0, 0, 0]
         };
 
-        
         display.show(&mut timer, screen, 20);
 
         rprintln!("Byte: {}     Char: {}", byte, byte as char);
