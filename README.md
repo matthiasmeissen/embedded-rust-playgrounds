@@ -202,7 +202,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: This requires `use core::fmt::Write;`.
 *   **Book**: Chapter 8 - Serial Communication (Page 120)
 
-### Day 30: Receiving Data
+### ✅ Day 30: Receiving Data
 *   **Topic**: Reading input from your keyboard to the micro:bit.
 *   **Exercise**: Run `examples/receive-byte.rs`. Type keys in your terminal and watch them appear in the RTT console (using `rprintln!`).
 *   **Hint**: The loop uses `serial.read()`. It will wait (block) until you press a key.
