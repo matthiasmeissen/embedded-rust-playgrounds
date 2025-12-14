@@ -208,7 +208,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: The loop uses `serial.read()`. It will wait (block) until you press a key.
 *   **Book**: Chapter 8 - Serial Communication (Page 121)
 
-### Day 31: The Echo Server
+### ✅ Day 31: The Echo Server
 *   **Topic**: Building a bidirectional communication loop.
 *   **Exercise**: Write a program that reads a byte from the computer and immediately sends it back. This makes your terminal act like a typewriter.
 *   **Hint**: Inside the loop: `let byte = serial.read(); serial.write(byte);`.

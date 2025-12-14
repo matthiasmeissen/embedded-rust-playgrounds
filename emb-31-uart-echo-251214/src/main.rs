@@ -27,7 +27,7 @@ fn main() -> ! {
     let mut timer = Timer::new(board.TIMER0);
     let mut display = Display::new(board.display_pins);
 
-    let mut serial = {
+    let mut serial: UartePort<microbit::pac::UARTE0> = {
         let serial = uarte::Uarte::new(
             board.UARTE0,
             board.uart.into(),
@@ -37,22 +37,60 @@ fn main() -> ! {
         UartePort::new(serial)
     };
 
-    let mut screen = [[0; 5]; 5];
+    let mut buffer: [u8; _] = [0; 20];
+    let mut current_index = 0;
 
     loop {
         let byte = serial.read().unwrap();
+        
+        // This makes typing absolutely weird, but creates interesting patterns in the console
+        match byte {
+            119 => {move_writehead(&mut serial, Direction::Up); store_in_buffer(119, &mut buffer, &mut current_index);},            //w
+            100 => {move_writehead(&mut serial, Direction::Right); store_in_buffer(100, &mut buffer, &mut current_index);}          //d
+            115 => {move_writehead(&mut serial, Direction::Down); store_in_buffer(115, &mut buffer, &mut current_index);}           //s
+            97 => {move_writehead(&mut serial, Direction::Left); store_in_buffer(97, &mut buffer, &mut current_index);}             //a
 
-        screen[0] = match byte {
-            49 => [1, 0, 0, 0, 0],
-            50 => [0, 1, 0, 0, 0],
-            51 => [0, 0, 1, 0, 0],
-            52 => [0, 0, 0, 1, 0],
-            53 => [0, 0, 0, 0, 1],
-            _ => [0, 0, 0, 0, 0]
+            117 => {move_writehead(&mut serial, Direction::Up); store_in_buffer(117, &mut buffer, &mut current_index);}             //u
+            107 => {move_writehead(&mut serial, Direction::Right); store_in_buffer(107, &mut buffer, &mut current_index);}          //k
+            106 => {move_writehead(&mut serial, Direction::Down); store_in_buffer(106, &mut buffer, &mut current_index);}           //j
+            104 => {move_writehead(&mut serial, Direction::Left); store_in_buffer(104, &mut buffer, &mut current_index);}           //h
+
+            99 => {
+                for i in buffer {
+                    serial.write(i).unwrap();
+                }
+            }
+
+            _ => serial.write(byte).unwrap(),
         };
-
-        display.show(&mut timer, screen, 20);
 
         rprintln!("Byte: {}     Char: {}", byte, byte as char);
     }
+}
+
+enum Direction {
+    Up,
+    Right,
+    Down,
+    Left,
+}
+
+fn move_writehead(serial: &mut UartePort<microbit::pac::UARTE0>, direction: Direction) {
+    serial.write(27).unwrap();
+    serial.write(91).unwrap();
+
+    match direction {
+        Direction::Up => serial.write(65).unwrap(),
+        Direction::Right => serial.write(67).unwrap(),
+        Direction::Down => serial.write(66).unwrap(),
+        Direction::Left => serial.write(68).unwrap(),
+    }
+}
+
+fn store_in_buffer(byte: u8, buffer: &mut [u8; 20], current_index: &mut usize) {
+    if *current_index >= buffer.len() {
+        *current_index = 0;
+    }
+    buffer[*current_index] = byte;
+    *current_index += 1;
 }
