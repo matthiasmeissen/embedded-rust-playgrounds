@@ -214,7 +214,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Inside the loop: `let byte = serial.read(); serial.write(byte);`.
 *   **Book**: Chapter 8 - Serial Communication (Page 122)
 
-### Day 32: Reverse String Challenge (Setup)
+### ✅ Day 32: Reverse String Challenge (Setup)
 *   **Topic**: Setting up a buffer for string manipulation.
 *   **Exercise**: Initialize a `heapless::Vec` with a capacity of 32 bytes.
 *   **Hint**: Embedded systems don't have a heap, so we use `heapless::Vec` which is a fixed-size array that acts like a vector.
