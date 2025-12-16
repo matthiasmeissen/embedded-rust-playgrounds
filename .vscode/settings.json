@@ -2,6 +2,6 @@
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
     "rust-analyzer.linkedProjects": [
-        "emb-32-uart-vec-251215/Cargo.toml"
+        "emb-33-uart-reverse-251216/Cargo.toml"
     ]
 }
