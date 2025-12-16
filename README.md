@@ -220,7 +220,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Embedded systems don't have a heap, so we use `heapless::Vec` which is a fixed-size array that acts like a vector.
 *   **Book**: Chapter 8 - Serial Communication (Page 123)
 
-### Day 33: Reverse String Challenge (Logic)
+### ✅ Day 33: Reverse String Challenge (Logic)
 *   **Topic**: Storing input until 'Enter' is pressed.
 *   **Exercise**: Modify your loop to push received bytes into the buffer. If the byte is `\r` (Enter), break the loop.
 *   **Hint**: Handle the `buffer.push` error case (if the user types too many characters).
