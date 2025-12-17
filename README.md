@@ -226,7 +226,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Handle the `buffer.push` error case (if the user types too many characters).
 *   **Book**: Chapter 8 - Serial Communication (Page 126)
 
-### Day 34: Reverse String Challenge (Output)
+### ✅ Day 34: Reverse String Challenge (Output)
 *   **Topic**: Processing the buffer and sending it back.
 *   **Exercise**: Once 'Enter' is detected, iterate through the buffer in reverse (`.iter().rev()`) and send the characters back.
 *   **Hint**: Don't forget to flush the serial port after writing!
