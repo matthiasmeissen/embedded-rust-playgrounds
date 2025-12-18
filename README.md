@@ -232,7 +232,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Don't forget to flush the serial port after writing!
 *   **Book**: Chapter 8 - Serial Communication (Page 126)
 
-### Day 35: Review & Polish
+### ✅ Day 35: Review & Polish
 *   **Topic**: Reviewing the Serial module.
 *   **Exercise**: Read the solution in the book carefully. Compare it to your code. Ensure you understand `heapless::Vec`.
 *   **Hint**: Serial communication is the primary way we debug complex logic later.
