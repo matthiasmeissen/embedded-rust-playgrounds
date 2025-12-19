@@ -244,7 +244,7 @@ A place to learn Rust for embedded devices.
 
 **Goal:** Talk to the Accelerometer and Magnetometer chips using the I2C protocol.
 
-### Day 36: I2C Protocol Basics
+### ✅ Day 36: I2C Protocol Basics
 *   **Topic**: Understanding Clock (SCL) and Data (SDA) lines.
 *   **Exercise**: Read the theory section on I2C. Understand the "Controller -> Target" relationship.
 *   **Hint**: I2C allows multiple sensors on the same two wires.
