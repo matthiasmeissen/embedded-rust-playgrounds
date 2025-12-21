@@ -250,7 +250,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: I2C allows multiple sensors on the same two wires.
 *   **Book**: Chapter 9 - I2C (Pages 127-130)
 
-### Day 37: Reading a Register
+### ✅ Day 37: Reading a Register
 *   **Topic**: Reading the "Who Am I" register manually.
 *   **Exercise**: Run `examples/chip-id.rs`. Configure the `twim` (Two-Wire Interface Master). Read the `ACCELEROMETER_ID_REG`.
 *   **Hint**: You need to write the address you want to read to the bus, then read the response.
