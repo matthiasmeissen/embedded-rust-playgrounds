@@ -256,7 +256,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: You need to write the address you want to read to the bus, then read the response.
 *   **Book**: Chapter 9 - I2C (Pages 132-133)
 
-### Day 38: Using the Driver (Accelerometer)
+### ✅ Day 38: Using the Driver (Accelerometer)
 *   **Topic**: Using the `lsm303agr` crate.
 *   **Exercise**: Run `examples/show-accel.rs`. Initialize the `Lsm303agr` struct. Read the X, Y, Z acceleration data.
 *   **Hint**: Using a driver crate saves you from looking up register numbers in a datasheet manually.
