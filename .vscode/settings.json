@@ -2,6 +2,6 @@
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
     "rust-analyzer.linkedProjects": [
-        "emb-38-acc-driver-251221/Cargo.toml"
+        "emb-39-acc-track-251222/Cargo.toml"
     ]
 }
