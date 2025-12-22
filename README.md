@@ -262,7 +262,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Using a driver crate saves you from looking up register numbers in a datasheet manually.
 *   **Book**: Chapter 9 - I2C (Pages 135-136)
 
-### Day 39: The "Punch-o-meter" (Concept)
+### ✅ Day 39: The "Punch-o-meter" (Concept)
 *   **Topic**: Measuring max G-force.
 *   **Exercise**: Read the requirements for the Punch-o-meter challenge.
 *   **Hint**: You need to detect when acceleration exceeds a threshold (start punch) and track the max value until it drops.
