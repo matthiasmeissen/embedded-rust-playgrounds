@@ -268,7 +268,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: You need to detect when acceleration exceeds a threshold (start punch) and track the max value until it drops.
 *   **Book**: Chapter 11 - Accelerometer (Page 152)
 
-### Day 40: The "Punch-o-meter" (Implementation)
+### ✅ Day 40: The "Punch-o-meter" (Implementation)
 *   **Topic**: Implementing the logic.
 *   **Exercise**: Modify the loop to track `max_g`. Update `max_g` only if the current reading is higher.
 *   **Hint**: Use `sensor.set_accel_scale` to allow measuring higher G-forces (up to 16G).
