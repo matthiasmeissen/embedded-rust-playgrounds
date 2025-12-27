@@ -274,7 +274,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Use `sensor.set_accel_scale` to allow measuring higher G-forces (up to 16G).
 *   **Book**: Chapter 11 - Accelerometer (Page 153)
 
-### Day 41: Magnetometer Basics
+### ✅ Day 41: Magnetometer Basics
 *   **Topic**: Reading the compass sensor.
 *   **Exercise**: Run `examples/magnitude.rs`. Read the X, Y, Z magnetic field data.
 *   **Hint**: The Z-axis points "into the floor" because the chip is on the back of the board.
