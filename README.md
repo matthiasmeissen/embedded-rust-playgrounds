@@ -280,7 +280,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: The Z-axis points "into the floor" because the chip is on the back of the board.
 *   **Book**: Chapter 10 - Magnetometer (Page 140)
 
-### Day 42: Math in `no_std`
+### ✅ Day 42: Math in `no_std`
 *   **Topic**: Calculating magnitude using `libm`.
 *   **Exercise**: Calculate the total strength of the magnetic field: `sqrt(x^2 + y^2 + z^2)`.
 *   **Hint**: Standard math functions aren't available in `no_std`. We import `sqrtf` from the `libm` crate.
