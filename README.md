@@ -286,7 +286,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Standard math functions aren't available in `no_std`. We import `sqrtf` from the `libm` crate.
 *   **Book**: Chapter 10 - Magnetometer (Page 142)
 
-### Day 43: Calibration (Theory)
+### ✅ Day 43: Calibration (Theory)
 *   **Topic**: Why is the compass wrong?
 *   **Exercise**: Read about "Hard Iron" offsets. Understand that you need to find the Min and Max values for X and Y by rotating the board.
 *   **Hint**: Calibration code is complex; the book provides a library for it, but understanding the *why* is important.
