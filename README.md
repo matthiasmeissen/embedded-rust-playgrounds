@@ -292,7 +292,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Calibration code is complex; the book provides a library for it, but understanding the *why* is important.
 *   **Book**: Chapter 10 - Magnetometer (Page 218 - Appendix)
 
-### Day 44: LED Compass Challenge (Math)
+### ✅ Day 44: LED Compass Challenge (Math)
 *   **Topic**: Calculating heading with `atan2`.
 *   **Exercise**: Use `atan2f(y, x)` to calculate the angle of the board relative to North.
 *   **Hint**: The output is in radians (-PI to +PI).
