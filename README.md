@@ -298,7 +298,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: The output is in radians (-PI to +PI).
 *   **Book**: Chapter 10 - Magnetometer (Page 145)
 
-### Day 45: LED Compass Challenge (Display)
+### ✅ Day 45: LED Compass Challenge (Display)
 *   **Topic**: Visualizing direction.
 *   **Exercise**: Map the calculated angle to one of the outer LEDs on the 5x5 matrix.
 *   **Hint**: The book provides an `indices` array that maps directions to LED coordinates.
