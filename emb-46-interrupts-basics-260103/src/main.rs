@@ -64,4 +64,5 @@ fn main() -> ! {
     loop {
         asm::wfi();
     }
+    
 }
