@@ -310,7 +310,7 @@ A place to learn Rust for embedded devices.
 
 **Goal:** Stop "polling" (busy waiting) and start letting the hardware wake up the CPU only when needed.
 
-### Day 46: Interrupt Theory
+### ✅ Day 46: Interrupt Theory
 *   **Topic**: How the CPU handles interruptions.
 *   **Exercise**: Read the section on the NVIC (Nested Vectored Interrupt Controller) and the Stack.
 *   **Hint**: When an interrupt happens, the CPU pauses your main loop, saves its state, runs the handler, and resumes.
