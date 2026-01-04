@@ -316,7 +316,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: When an interrupt happens, the CPU pauses your main loop, saves its state, runs the handler, and resumes.
 *   **Book**: Chapter 12 - Interrupts (Page 155)
 
-### Day 47: Defining an ISR
+### ✅ Day 47: Defining an ISR
 *   **Topic**: Writing your first Interrupt Service Routine.
 *   **Exercise**: Run `examples/poke.rs`. Define a function `fn GPIOTE()` with the `#[interrupt]` attribute.
 *   **Hint**: If you don't clear the event in the handler, the interrupt will fire infinitely (looping).
