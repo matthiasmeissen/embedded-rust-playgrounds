@@ -322,7 +322,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: If you don't clear the event in the handler, the interrupt will fire infinitely (looping).
 *   **Book**: Chapter 12 - Interrupts (Page 157)
 
-### Day 48: The Panic Problem
+### ✅ Day 48: The Panic Problem
 *   **Topic**: What happens inside an interrupt.
 *   **Exercise**: Experiment with adding a `panic!()` inside the interrupt handler to see how it stops the program.
 *   **Hint**: This confirms the interrupt is actually firing.
