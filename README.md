@@ -328,7 +328,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: This confirms the interrupt is actually firing.
 *   **Book**: Chapter 12 - Interrupts (Page 158)
 
-### Day 49: Sharing Data (Theory)
+### ✅ Day 49: Sharing Data (Theory)
 *   **Topic**: The problem with global variables in Rust.
 *   **Exercise**: Read about `static` variables and why `static mut` is unsafe.
 *   **Hint**: Interrupts are like threads; they share memory, which can lead to race conditions.
