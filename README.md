@@ -334,7 +334,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Interrupts are like threads; they share memory, which can lead to race conditions.
 *   **Book**: Chapter 13 - Concurrency (Page 163)
 
-### Day 50: Critical Sections & Mutex
+### ✅ Day 50: Critical Sections & Mutex
 *   **Topic**: Safe data sharing.
 *   **Exercise**: Use `critical_section::Mutex` and `RefCell` to share a counter between `main` and the interrupt.
 *   **Hint**: You don't "lock" this Mutex. You use `interrupt::free(|cs| ...)` to access the data.
