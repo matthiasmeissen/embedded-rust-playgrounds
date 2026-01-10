@@ -340,7 +340,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: You don't "lock" this Mutex. You use `interrupt::free(|cs| ...)` to access the data.
 *   **Book**: Chapter 13 - Concurrency (Page 168)
 
-### Day 51: Configuring GPIOTE
+### ✅ Day 51: Configuring GPIOTE
 *   **Topic**: Button interrupts.
 *   **Exercise**: Configure the GPIOTE peripheral to fire an event when Button A is pressed (High to Low transition).
 *   **Hint**: You must unmask the interrupt in the NVIC using `unsafe { pac::NVIC::unmask(...) }`.
