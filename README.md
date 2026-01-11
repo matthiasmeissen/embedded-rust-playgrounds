@@ -346,7 +346,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: You must unmask the interrupt in the NVIC using `unsafe { pac::NVIC::unmask(...) }`.
 *   **Book**: Chapter 12 - Interrupts (Page 157)
 
-### Day 52: Sharing Peripherals
+### ✅ Day 52: Sharing Peripherals
 *   **Topic**: Moving the GPIOTE peripheral to a global.
 *   **Exercise**: Run `examples/count.rs`. Use `LockMut` (a helper type) to move the GPIOTE peripheral into a global static so the interrupt handler can access it to clear events.
 *   **Hint**: Peripherals are singletons; you can't create them twice.
