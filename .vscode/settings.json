@@ -2,6 +2,6 @@
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
     "rust-analyzer.linkedProjects": [
-        "emb-51-interrupts-timer-260110/Cargo.toml"
+        "emb-52-interrupts-phasor-260111/Cargo.toml"
     ]
 }
