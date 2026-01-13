@@ -352,7 +352,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Peripherals are singletons; you can't create them twice.
 *   **Book**: Chapter 13 - Concurrency (Page 170)
 
-### Day 53: Counting Interrupts
+### ✅ Day 53: Counting Interrupts
 *   **Topic**: A button counter.
 *   **Exercise**: Increment an `AtomicUsize` counter every time the button interrupt fires. Print the count in the main loop.
 *   **Hint**: Using `Atomic` types avoids the need for a full Mutex for simple numbers.
