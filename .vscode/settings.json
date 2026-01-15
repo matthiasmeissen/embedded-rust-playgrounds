@@ -2,6 +2,6 @@
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
     "rust-analyzer.linkedProjects": [
-        "emb-53-interrupts-atomics-260113/Cargo.toml"
+        "emb-54-interrupts-debounce-260115/Cargo.toml"
     ]
 }
