@@ -358,7 +358,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Using `Atomic` types avoids the need for a full Mutex for simple numbers.
 *   **Book**: Chapter 13 - Concurrency (Page 170)
 
-### Day 54: The Bouncing Button
+### ✅ Day 54: The Bouncing Button
 *   **Topic**: Hardware reality.
 *   **Exercise**: Observe that one button press might trigger multiple interrupts (bouncing).
 *   **Hint**: Mechanical switches are "noisy" electrically.
