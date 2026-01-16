@@ -364,7 +364,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Mechanical switches are "noisy" electrically.
 *   **Book**: Chapter 13 - Concurrency (Page 173)
 
-### Day 55: Debouncing with Timers
+### ✅ Day 55: Debouncing with Timers
 *   **Topic**: Using a timer to ignore bounce.
 *   **Exercise**: In the interrupt, start a Timer. Ignore subsequent interrupts until the timer expires.
 *   **Hint**: This requires sharing both the GPIOTE and the TIMER globally.
