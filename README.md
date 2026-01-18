@@ -376,7 +376,7 @@ A place to learn Rust for embedded devices.
 
 **Goal:** Using Timers and PWM (Pulse Width Modulation) basics to make sound.
 
-### Day 56: The Speaker
+### ✅ Day 56: The Speaker
 *   **Topic**: How the micro:bit speaker works.
 *   **Exercise**: Read about the Speaker pin. It is a piezoelectric speaker controlled by a GPIO pin.
 *   **Hint**: High = Push out, Low = Pull in.
