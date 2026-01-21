@@ -2,6 +2,6 @@
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
     "rust-analyzer.linkedProjects": [
-        "emb-56-audio-basics-260117/Cargo.toml"
+        "emb-57-audio-wavetable-260121/Cargo.toml"
     ]
 }
