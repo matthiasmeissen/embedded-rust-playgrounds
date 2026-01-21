@@ -382,7 +382,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: High = Push out, Low = Pull in.
 *   **Book**: Chapter 15 - The MB2 Speaker (Page 177)
 
-### Day 57: Making a Tone (Square Wave)
+### ✅ Day 57: Making a Tone (Square Wave)
 *   **Topic**: Generating a frequency.
 *   **Exercise**: Run `examples/square-wave.rs`. Toggle the speaker pin High/Low with a delay in between.
 *   **Hint**: Frequency = 1 / Period. To get 440Hz, you need a specific delay.
