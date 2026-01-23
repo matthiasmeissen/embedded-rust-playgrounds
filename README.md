@@ -388,7 +388,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Frequency = 1 / Period. To get 440Hz, you need a specific delay.
 *   **Book**: Chapter 15 - The MB2 Speaker (Page 178)
 
-### Day 58: Interrupt-Driven Sound
+### ✅ Day 58: Interrupt-Driven Sound
 *   **Topic**: Non-blocking audio.
 *   **Exercise**: Move the toggle logic into a Timer interrupt. This allows the main loop to do other things (like waiting) while the sound plays.
 *   **Hint**: This is the "Siren" challenge.
