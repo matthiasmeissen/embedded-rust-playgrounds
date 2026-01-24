@@ -394,7 +394,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: This is the "Siren" challenge.
 *   **Book**: Chapter 15 - The MB2 Speaker (Page 179)
 
-### Day 59: The Siren Logic
+### ✅ Day 59: The Siren Logic
 *   **Topic**: Changing frequency over time.
 *   **Exercise**: In the interrupt handler, change the timer's `cc` (capture compare) value to change the frequency of the next interrupt.
 *   **Hint**: This creates a "sweeping" sound.
