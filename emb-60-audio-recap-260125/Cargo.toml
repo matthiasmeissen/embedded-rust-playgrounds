@@ -12,6 +12,7 @@ microbit-v2 = "0.15.1"
 panic-rtt-target = "0.2.0"
 rtt-target = "0.6.1"
 critical-section = "1.2.0"
+libm = "0.2.16"
 
 [dependencies.cortex-m]
 version = "0.7.7"

@@ -400,7 +400,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: This creates a "sweeping" sound.
 *   **Book**: Chapter 15 - The MB2 Speaker (Page 180)
 
-### Day 60: The Siren Structure
+### ✅ Day 60: The Siren Structure
 *   **Topic**: Organizing the siren code.
 *   **Exercise**: Implement the `Siren` struct that holds the state (current frequency, time, pin state).
 *   **Hint**: The `Siren` struct needs to be shared globally (Mutex) so the interrupt can update it.
