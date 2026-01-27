@@ -17,7 +17,6 @@ use game::coords;
 fn main() -> ! {
     rtt_init_print!();
 
-    
     test();
 
     let coord = coords::Coords::new(0, 0);

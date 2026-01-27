@@ -412,7 +412,7 @@ A place to learn Rust for embedded devices.
 
 **Goal:** The Final Project. Building a complete game engine using modules, non-blocking display, and game logic.
 
-### Day 61: Modularity
+### ✅ Day 61: Modularity
 *   **Topic**: Organizing a large project.
 *   **Exercise**: Create the file structure: `src/main.rs`, `src/game.rs`, `src/display.rs`, `src/controls.rs`.
 *   **Hint**: Read about the `mod` keyword in Rust.
