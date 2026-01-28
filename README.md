@@ -418,7 +418,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Read about the `mod` keyword in Rust.
 *   **Book**: Chapter 16 - Snake Game (Page 185)
 
-### Day 62: Game Logic - Coordinates
+### ✅ Day 62: Game Logic - Coordinates
 *   **Topic**: Defining the grid.
 *   **Exercise**: Create `src/game/coords.rs`. Define the `Coords` struct (row, col) and the logic for checking if a point is out of bounds.
 *   **Hint**: The grid is 5x5.
