@@ -424,7 +424,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: The grid is 5x5.
 *   **Book**: Chapter 16 - Snake Game (Page 187)
 
-### Day 63: Random Number Generation (RNG)
+### ✅ Day 63: Random Number Generation (RNG)
 *   **Topic**: Generating random food positions.
 *   **Exercise**: Implement the `Prng` struct in `src/game/rng.rs` using a simple Xorshift algorithm. Seed it using the micro:bit's hardware RNG.
 *   **Hint**: Hardware RNG is slow; software PRNG is fast.
