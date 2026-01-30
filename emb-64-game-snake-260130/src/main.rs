@@ -10,8 +10,9 @@ use panic_rtt_target as _;
 use rtt_target::{rtt_init_print, rprintln};
 
 mod game;
-use game::coords;
-use game::rng;
+use game::coords::Coords;
+use game::rng::Prng;
+use game::snake::Snake;
 
 #[entry]
 fn main() -> ! {
@@ -19,15 +20,16 @@ fn main() -> ! {
     let board = board::Board::take().unwrap();
     let mut hardware_rng = Rng::new(board.RNG);
 
-    let mut prng = rng::Prng::seeded(&mut hardware_rng);
+    let mut prng = Prng::seeded(&mut hardware_rng);
     let random_number = prng.random_u32();
     rprintln!("Random number is: {}", random_number);
 
-    let random_number = prng.random_u32();
-    rprintln!("Random number is: {}", random_number);
-
-    let coord = coords::Coords::new(0, 0);
-    rprintln!("{:?}", coord);
+    let mut snake = Snake::new();
+    rprintln!("Snake is: {:?}", snake);
+    snake.step_grow(Coords::new(2, 3));
+    rprintln!("Snake is: {:?}", snake);
+    snake.turn_right();
+    rprintln!("Snake is: {:?}", snake);
 
     loop {
         asm::wfi();

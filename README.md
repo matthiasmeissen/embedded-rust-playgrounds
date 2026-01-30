@@ -430,7 +430,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Hardware RNG is slow; software PRNG is fast.
 *   **Book**: Chapter 16 - Snake Game (Page 188)
 
-### Day 64: The Snake Struct
+### ✅ Day 64: The Snake Struct
 *   **Topic**: Defining the snake.
 *   **Exercise**: Create `src/game/snake.rs`. Use a `Queue` (from `heapless` crate) to store the snake's body segments.
 *   **Hint**: `heapless` allows us to have a list of coordinates without using a dynamic memory allocator (heap).
