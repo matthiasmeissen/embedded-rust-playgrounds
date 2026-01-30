@@ -2,6 +2,6 @@
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
     "rust-analyzer.linkedProjects": [
-        "emb-63-game-random-260129/Cargo.toml"
+        "emb-64-game-snake-260130/Cargo.toml"
     ]
 }
