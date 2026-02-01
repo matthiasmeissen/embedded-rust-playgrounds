@@ -1,5 +1,7 @@
 
-#[derive(Debug)]
+use heapless::FnvIndexSet;
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub struct Coords {
     pub row: i8,
     pub col: i8,

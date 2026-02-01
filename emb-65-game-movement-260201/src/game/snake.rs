@@ -1,10 +1,12 @@
-use heapless::spsc::Queue;
-use crate::game::{coords::Coords, movement::Direction};
+use heapless::{FnvIndexSet, spsc::Queue};
+use crate::game::{coords::Coords, movement::{Direction, Turn}};
 
 #[derive(Debug)]
 pub struct Snake {
     pub head: Coords,
     pub tail: Queue<Coords, 32>,
+    // A set containing all coors the snake is on for quick colission check
+    pub coord_set: FnvIndexSet<Coords, 32>,
     pub direction: Direction,
 }
 
@@ -15,15 +17,28 @@ impl Snake {
 
         let mut tail = Queue::new();
         tail.enqueue(initial_tail).unwrap();
+
+        let mut coord_set: FnvIndexSet<Coords, 32> = FnvIndexSet::new();
+        coord_set.insert(head).unwrap();
+        coord_set.insert(initial_tail).unwrap();
         Self { 
             head, 
             tail, 
+            coord_set,
             direction: Direction::Right,
         }
     }
 
-    pub fn step_grow(&mut self, coord: Coords) {
-        let _ = self.tail.enqueue(coord);
+    pub fn step(&mut self, coords: Coords, extend: bool) {
+        // Place current head inside the tail
+        self.tail.enqueue(self.head).unwrap();
+        // Set head to new position
+        self.head = coords;
+        self.coord_set.insert(coords).unwrap();
+        if !extend {
+            let back = self.tail.dequeue().unwrap();
+            self.coord_set.remove(&back);
+        }
     }
 
     pub fn turn_right(&mut self) {
@@ -41,6 +56,14 @@ impl Snake {
             Direction::Right => Direction::Up,
             Direction::Down => Direction::Right,
             Direction::Left => Direction::Down,
+        }
+    }
+
+    pub fn turn(&mut self, direction: Turn) {
+        match direction {
+            Turn::Right => self.turn_right(),
+            Turn::Left => self.turn_left(),
+            Turn::None => (),
         }
     }
 }

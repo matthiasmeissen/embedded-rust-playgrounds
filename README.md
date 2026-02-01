@@ -436,7 +436,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: `heapless` allows us to have a list of coordinates without using a dynamic memory allocator (heap).
 *   **Book**: Chapter 16 - Snake Game (Page 190)
 
-### Day 65: Movement Logic
+### ✅ Day 65: Movement Logic
 *   **Topic**: Moving the snake.
 *   **Exercise**: Implement `step()` logic. Add the new head position to the queue and remove the tail (unless eating food).
 *   **Hint**: Handle wrapping around the screen edges here.

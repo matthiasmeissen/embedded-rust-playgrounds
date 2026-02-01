@@ -25,11 +25,18 @@ fn main() -> ! {
     rprintln!("Random number is: {}", random_number);
 
     let mut snake = Snake::new();
-    rprintln!("Snake is: {:?}", snake);
-    snake.step_grow(Coords::new(2, 3));
-    rprintln!("Snake is: {:?}", snake);
+    rprintln!("Init             Snake is: {:?}", snake);
+
+    let next_coord = Coords::new(2, 3);
+    snake.step(next_coord, true);
+    rprintln!("Move Forward     Snake is: {:?}", snake);
+
     snake.turn_right();
-    rprintln!("Snake is: {:?}", snake);
+    rprintln!("Turn Right       Snake is: {:?}", snake);
+
+    let next_coord = Coords::new(3, 3);
+    snake.step(next_coord, true);
+    rprintln!("Move Forward     Snake is: {:?}", snake);
 
     loop {
         asm::wfi();
