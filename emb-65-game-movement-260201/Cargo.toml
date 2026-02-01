@@ -1,0 +1,19 @@
+[package]
+name = "emb-65-game-movement-260201"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+cortex-m-rt = "0.7.5"
+embedded-io = "0.6.1"
+embedded-hal = "1.0.0"
+heapless = "0.8.0"
+microbit-v2 = "0.15.1"
+panic-rtt-target = "0.2.0"
+rtt-target = "0.6.1"
+critical-section = "1.2.0"
+libm = "0.2.16"
+
+[dependencies.cortex-m]
+version = "0.7.7"
+features = ["inline-asm", "critical-section-single-core"]
