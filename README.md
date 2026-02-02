@@ -442,7 +442,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Handle wrapping around the screen edges here.
 *   **Book**: Chapter 16 - Snake Game (Page 193)
 
-### Day 66: Game State
+### ✅ Day 66: Game State
 *   **Topic**: Win/Loss conditions.
 *   **Exercise**: Implement `GameStatus` enum (Won, Lost, Ongoing). Check for self-collision or full grid.
 *   **Hint**: If the new head coordinate is already in the snake's body set, it's a collision.

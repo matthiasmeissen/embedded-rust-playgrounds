@@ -29,7 +29,7 @@ impl Snake {
         }
     }
 
-    pub fn step(&mut self, coords: Coords, extend: bool) {
+    pub fn move_snake(&mut self, coords: Coords, extend: bool) {
         // Place current head inside the tail
         self.tail.enqueue(self.head).unwrap();
         // Set head to new position

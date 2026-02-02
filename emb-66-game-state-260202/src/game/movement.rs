@@ -1,4 +1,6 @@
 
+use crate::game::coords::Coords;
+
 #[derive(Debug)]
 pub enum Direction {
     Up,
@@ -14,7 +16,14 @@ pub enum Turn {
 }
 
 pub enum GameStatus {
-    Win,
-    Loose,
+    Won,
+    Lost,
     Ongoing,
+}
+
+pub enum StepOutcome {
+    Full,
+    Collision,
+    Eat(Coords),
+    Move(Coords),
 }

@@ -18,7 +18,10 @@ use game::snake::Snake;
 fn main() -> ! {
     rtt_init_print!();
     let board = board::Board::take().unwrap();
+    let mut timer = Timer::new(board.TIMER0);
+
     let mut hardware_rng = Rng::new(board.RNG);
+    rprintln!("Test");
 
     let mut prng = Prng::seeded(&mut hardware_rng);
     let random_number = prng.random_u32();
@@ -28,15 +31,18 @@ fn main() -> ! {
     rprintln!("Init             Snake is: {:?}", snake);
 
     let next_coord = Coords::new(2, 3);
-    snake.step(next_coord, true);
+    snake.move_snake(next_coord, true);
     rprintln!("Move Forward     Snake is: {:?}", snake);
 
     snake.turn_right();
     rprintln!("Turn Right       Snake is: {:?}", snake);
 
     let next_coord = Coords::new(3, 3);
-    snake.step(next_coord, true);
-    rprintln!("Move Forward     Snake is: {:?}", snake);
+    snake.move_snake(next_coord, true);
+    //rprintln!("Move Forward     Snake is: {:?}", snake);
+
+    let random_coord = Coords::random(&mut prng, Some(&snake.coord_set));
+    rprintln!("Random Coord     {:?}", random_coord);
 
     loop {
         asm::wfi();
