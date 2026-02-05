@@ -448,7 +448,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: If the new head coordinate is already in the snake's body set, it's a collision.
 *   **Book**: Chapter 16 - Snake Game (Page 189)
 
-### Day 67: Controls Module - Initialization
+### ✅ Day 67: Controls Module - Initialization
 *   **Topic**: Setting up buttons for the game.
 *   **Exercise**: In `src/controls.rs`, initialize the GPIOTE channels for Button A and B.
 *   **Hint**: Reuse the interrupt logic we learned in Phase 5.
