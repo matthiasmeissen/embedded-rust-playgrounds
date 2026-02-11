@@ -9,6 +9,7 @@ pub enum Direction {
     Left
 }
 
+#[derive(Clone, Copy, Debug)]
 pub enum Turn {
     Left,
     Right,

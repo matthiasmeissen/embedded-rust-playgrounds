@@ -30,5 +30,8 @@ fn main() -> ! {
 
     loop {
         asm::wfi();
+
+        let current_turn = controls::get_turn(false);
+        rprintln!("Turn is: {:?}", current_turn);
     }
 }

@@ -454,7 +454,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Reuse the interrupt logic we learned in Phase 5.
 *   **Book**: Chapter 16 - Snake Game (Page 196)
 
-### Day 68: Controls Module - Interrupts
+### ✅ Day 68: Controls Module - Interrupts
 *   **Topic**: Handling game input.
 *   **Exercise**: Write the interrupt handler to update a global `Turn` enum when buttons are pressed.
 *   **Hint**: Button A = Left, Button B = Right.

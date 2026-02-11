@@ -7,20 +7,28 @@ use microbit::{
 };
 use rtt_target::rprintln;
 
+use crate::game::movement::Turn;
+
 static SHARED_GPIOTE: Mutex<RefCell<Option<Gpiote>>> = Mutex::new(RefCell::new(None));
+pub static SHARED_TURN: Mutex<RefCell<Option<Turn>>> = Mutex::new(RefCell::new(None));
 
 #[interrupt]
 fn GPIOTE() {
     cortex_m::interrupt::free(|cs| {
-        if let Some(gpiote) = SHARED_GPIOTE.borrow(cs).borrow_mut().as_mut() {
-            if gpiote.channel0().is_event_triggered() {
-                rprintln!("Button A");
-                gpiote.channel0().reset_events();
-            }
-            if gpiote.channel1().is_event_triggered() {
-                rprintln!("Button B");
-                gpiote.channel1().reset_events();
-            }
+        if let Some(gpiote) = SHARED_GPIOTE.borrow(cs).borrow().as_ref() {
+            let a_pressed = gpiote.channel0().is_event_triggered();
+            let b_pressed = gpiote.channel1().is_event_triggered();
+
+            let turn = match (a_pressed, b_pressed) {
+                (true, false) => Turn::Left,
+                (false, true) => Turn::Right,
+                _ => Turn::None
+            };
+
+            SHARED_TURN.borrow(cs).replace(Some(turn));
+
+            gpiote.channel0().reset_events();
+            gpiote.channel1().reset_events();
         }
     })
 }
@@ -41,8 +49,23 @@ pub fn init_buttons(board_gpiote: pac::GPIOTE, buttons: Buttons) {
 
     cortex_m::interrupt::free(|cs| {
         SHARED_GPIOTE.borrow(cs).replace(Some(gpiote));
+        SHARED_TURN.borrow(cs).replace(Some(Turn::None));
     });
 
     unsafe { pac::NVIC::unmask(pac::interrupt::GPIOTE) };
     pac::NVIC::unpend(pac::interrupt::GPIOTE);
+}
+
+pub fn get_turn(reset: bool) -> Turn {
+    if reset {
+        return Turn::None;
+    }
+    
+    let mut turn = Turn::None;
+    cortex_m::interrupt::free(|cs| {
+        if let Some(inner_turn) = SHARED_TURN.borrow(cs).borrow().as_ref() {
+            turn = *inner_turn;
+        }
+    });
+    turn
 }
