@@ -2,6 +2,6 @@
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
     "rust-analyzer.linkedProjects": [
-        "emb-67-game-buttons-260205/Cargo.toml"
+        "emb-68-game-interrupts-260211/Cargo.toml"
     ]
 }
