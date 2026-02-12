@@ -460,7 +460,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Button A = Left, Button B = Right.
 *   **Book**: Chapter 16 - Snake Game (Page 198)
 
-### Day 69: Display Module - Non-blocking
+### ✅ Day 69: Display Module - Non-blocking
 *   **Topic**: Why non-blocking?
 *   **Exercise**: Read about the non-blocking display driver. It allows variable brightness (greyscale) which helps distinguish the head from the tail.
 *   **Hint**: It uses a Timer interrupt to flash LEDs very fast.

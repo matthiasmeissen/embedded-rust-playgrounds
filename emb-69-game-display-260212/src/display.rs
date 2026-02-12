@@ -39,8 +39,8 @@ pub fn init_display(timer: pac::TIMER1, pins: DisplayPins, clock: pac::CLOCK, rt
         SHARED_TIMER.borrow(cs).replace(Some(rtc0));
     });
 
-    unsafe { pac::NVIC::unmask(pac::interrupt::RTC0) };
     unsafe { pac::NVIC::unmask(pac::interrupt::TIMER1) };
+    unsafe { pac::NVIC::unmask(pac::interrupt::RTC0) };
 }
 
 #[interrupt]
@@ -53,7 +53,7 @@ fn TIMER1() {
 }
 
 #[interrupt]
-unsafe fn RTC0() {
+fn RTC0() {
     static mut STEP: u8 = 0;
 
     cortex_m::interrupt::free(|cs| {
