@@ -13,6 +13,8 @@ mod game;
 use game::rng::Prng;
 use game::snake::Snake;
 
+use crate::{display::{ImageState, SHARED_IMAGE_STATE}, game::movement::Turn};
+
 mod controls;
 mod display;
 
@@ -38,6 +40,14 @@ fn main() -> ! {
         asm::wfi();
 
         let current_turn = controls::get_turn(false);
+        let image_state = match current_turn {
+            Turn::None => ImageState::Cross,
+            Turn::Right => ImageState::Right,
+            Turn::Left => ImageState::Left,
+        };
         rprintln!("Turn is: {:?}", current_turn);
+        cortex_m::interrupt::free(|cs| {
+            SHARED_IMAGE_STATE.borrow(cs).replace(Some(image_state));
+        })
     }
 }

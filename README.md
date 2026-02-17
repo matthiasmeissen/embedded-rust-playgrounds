@@ -466,7 +466,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: It uses a Timer interrupt to flash LEDs very fast.
 *   **Book**: Chapter 16 - Snake Game (Page 200)
 
-### Day 70: Display Initialization
+### ✅ Day 70: Display Initialization
 *   **Topic**: Setting up the display timer.
 *   **Exercise**: In `src/display.rs`, initialize `microbit::display::nonblocking::Display`.
 *   **Hint**: You need to enable the TIMER1 interrupt.
