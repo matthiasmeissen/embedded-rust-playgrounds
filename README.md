@@ -472,7 +472,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: You need to enable the TIMER1 interrupt.
 *   **Book**: Chapter 16 - Snake Game (Page 201)
 
-### Day 71: Display Interrupt
+### ✅ Day 71: Display Interrupt
 *   **Topic**: Driving the LEDs.
 *   **Exercise**: Implement the `TIMER1` interrupt handler. It simply calls `display.handle_display_event()`.
 *   **Hint**: This must be extremely fast to prevent flickering.

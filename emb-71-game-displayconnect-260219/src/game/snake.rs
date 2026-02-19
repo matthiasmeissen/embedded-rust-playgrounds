@@ -11,7 +11,7 @@ pub struct Snake {
 }
 
 impl Snake {
-    pub fn new() -> Self {
+    pub fn make_snake() -> Self {
         let head = Coords::new(2, 2);
         let initial_tail = Coords::new(2, 1);
 
