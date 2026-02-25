@@ -478,7 +478,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: This must be extremely fast to prevent flickering.
 *   **Book**: Chapter 16 - Snake Game (Page 202)
 
-### Day 72: Rendering the Game
+### ✅ Day 72: Rendering the Game
 *   **Topic**: Converting game state to pixels.
 *   **Exercise**: Implement `game_matrix()` in `src/game.rs`. It converts the snake coordinates into a 5x5 array of brightness values.
 *   **Hint**: Head = Bright, Tail = Dim, Food = Medium.

@@ -37,7 +37,7 @@ fn main() -> ! {
         let current_turn = controls::get_turn(false);
         rprintln!("Turn is: {:?}", current_turn);
 
-        let image = GreyscaleImage::new(&game.game_matrix(6, 5, 9));
+        let image = GreyscaleImage::new(&game.game_matrix(6, 4, 9));
         display::show_image(&image);
     }
 }
