@@ -484,7 +484,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Head = Bright, Tail = Dim, Food = Medium.
 *   **Book**: Chapter 16 - Snake Game (Page 195)
 
-### Day 73: Final Assembly - The Main Loop
+### ✅ Day 73: Final Assembly - The Main Loop
 *   **Topic**: Putting it all together.
 *   **Exercise**: In `main.rs`, initialize all modules. Create the game loop: `game.step()`, render image, sleep.
 *   **Hint**: Use `timer.delay_ms()` to control the game speed.

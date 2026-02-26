@@ -36,7 +36,6 @@ fn main() -> ! {
             display::show_image(&image);
             timer.delay_ms(game.step_len_ms());
             
-
             match game.status {
                 GameStatus::Ongoing => game.step(controls::get_turn(true)),
                 _ => {
