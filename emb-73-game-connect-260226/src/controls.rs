@@ -57,14 +57,13 @@ pub fn init_buttons(board_gpiote: pac::GPIOTE, buttons: Buttons) {
 }
 
 pub fn get_turn(reset: bool) -> Turn {
-    if reset {
-        return Turn::None;
-    }
-    
     let mut turn = Turn::None;
     cortex_m::interrupt::free(|cs| {
         if let Some(inner_turn) = SHARED_TURN.borrow(cs).borrow().as_ref() {
             turn = *inner_turn;
+        }
+        if reset {
+            SHARED_TURN.borrow(cs).replace(Some(Turn::None));
         }
     });
     turn
