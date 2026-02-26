@@ -35,6 +35,7 @@ fn main() -> ! {
             let image = GreyscaleImage::new(&game.game_matrix(6, 3, 9));
             display::show_image(&image);
             timer.delay_ms(game.step_len_ms());
+            
 
             match game.status {
                 GameStatus::Ongoing => game.step(controls::get_turn(true)),
