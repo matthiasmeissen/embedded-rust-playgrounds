@@ -130,9 +130,9 @@ impl Game {
     }
 
     pub fn step_len_ms(&self) -> u32 {
-        let result = 1000 - (200 * ((self.speed as u32) - 1));
-        if result < 200 {
-            200 
+        let result = 1000 - (400 * ((self.speed as u32) - 1));
+        if result < 400 {
+            400 
         } else {
             result as u32
         }
