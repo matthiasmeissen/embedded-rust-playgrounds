@@ -490,7 +490,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: Use `timer.delay_ms()` to control the game speed.
 *   **Book**: Chapter 16 - Snake Game (Page 204)
 
-### Day 74: Tuning the Game
+### ✅ Day 74: Tuning the Game
 *   **Topic**: Polish.
 *   **Exercise**: Adjust the speed. Make it get faster as you eat more food.
 *   **Hint**: `step_len_ms` calculation on Page 194.
