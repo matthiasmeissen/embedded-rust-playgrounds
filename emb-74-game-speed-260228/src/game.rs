@@ -136,6 +136,7 @@ impl Game {
         } else {
             result as u32
         }
+        
     }
     
     pub fn game_matrix(&self, head_brightness: u8, tail_brightness: u8, food_brightness: u8) -> [[u8; 5]; 5] {
