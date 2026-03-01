@@ -34,6 +34,8 @@ fn main() -> ! {
         loop {
             let image = GreyscaleImage::new(&game.game_matrix(6, 3, 9));
             display::show_image(&image);
+            rprintln!("{:?}", game.status);
+            rprintln!("{:?}", game.score);
             timer.delay_ms(game.step_len_ms());
             
             match game.status {

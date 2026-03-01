@@ -496,7 +496,7 @@ A place to learn Rust for embedded devices.
 *   **Hint**: `step_len_ms` calculation on Page 194.
 *   **Book**: Chapter 16 - Snake Game (Page 194)
 
-### Day 75: Debugging the Game
+### ✅ Day 75: Debugging the Game
 *   **Topic**: Using RTT for game logic.
 *   **Exercise**: Add `rprintln!` statements to print the score and current state. Verify the logic works even if the display looks weird.
 *   **Book**: Chapter 16 - Snake Game

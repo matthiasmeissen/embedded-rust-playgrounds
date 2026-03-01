@@ -16,6 +16,7 @@ pub enum Turn {
     None
 }
 
+#[derive(Debug)]
 pub enum GameStatus {
     Won,
     Lost,

@@ -14,7 +14,7 @@ pub struct Game {
     snake: snake::Snake,
     food_coords: coords::Coords,
     speed: u8,
-    score: u8,
+    pub score: u8,
 }
 
 impl Game {
@@ -37,6 +37,7 @@ impl Game {
         self.place_food();
         self.speed = 1;
         self.status = movement::GameStatus::Ongoing;
+        self.score = 0;
     }
 
     fn place_food(&mut self) -> Coords {
@@ -130,9 +131,9 @@ impl Game {
     }
 
     pub fn step_len_ms(&self) -> u32 {
-        let result = 1000 - (400 * ((self.speed as u32) - 1));
-        if result < 400 {
-            400 
+        let result = 1000 - (200 * ((self.speed as u32) - 1));
+        if result < 200 {
+            200 
         } else {
             result as u32
         }
