@@ -501,7 +501,7 @@ A place to learn Rust for embedded devices.
 *   **Exercise**: Add `rprintln!` statements to print the score and current state. Verify the logic works even if the display looks weird.
 *   **Book**: Chapter 16 - Snake Game
 
-### Days 76: Deep Dive Review & Extension
+### ✅ Days 76: Deep Dive Review & Extension
 *   **Topic**: Re-reading and consolidating.
 *   **Exercise**: The book suggests "What's left for you to explore" on Page 206.
 *   **Task**: Pick one topic (DMA, SPI, or Async) and read the summary.
